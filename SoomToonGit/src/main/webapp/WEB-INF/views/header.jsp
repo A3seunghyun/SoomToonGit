@@ -14,13 +14,13 @@
 	<div class="header">
 		<div class="header-1">
 			<div class="header-content">
-				<a class="logo_container" id="logo_container" href="${pageContext.request.contextPath}/soomtoonDaily">
+				<a class="logo_container" id="logo_container" href="${pageContext.request.contextPath}/soomtoon_daily">
 					<img src="resources/img/Soomtoon_logo.png" class="logo_img">
 				</a>
 				<div class="menu-container">
-					<a class="menu active" href="${pageContext.request.contextPath}/soomtoonDaily"><p>웹툰</p></a>
+					<a class="menu active" href="${pageContext.request.contextPath}/soomtoon_daily"><p>웹툰</p></a>
 					<a class="menu" href="${pageContext.request.contextPath}/freeBulletinBoard"><p>자유게시판</p></a>
-					<a class="menu" href="${pageContext.request.contextPath}/soomtoonDaily"><p>홈으로.</p></a>
+					<a class="menu" href="${pageContext.request.contextPath}/soomtoon_daily"><p>홈으로.</p></a>
 				</div>
 				<div class="search-container">
 					<form>

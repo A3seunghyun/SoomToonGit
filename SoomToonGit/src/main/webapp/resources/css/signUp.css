@@ -5,7 +5,7 @@
 	font-family:Pretendard Variable,Pretendard,-apple-system,BlinkMacSystemFont,system-ui,Roboto,Helvetica Neue,Segoe UI,Apple SD Gothic Neo,Noto Sans KR,Malgun Gothic,sans-serif!important;
 }
 h5{margin:0}
-input{margin-bottom: 10px;}
+.content_box input{margin-bottom: 10px;}
 #id,#pw,#name {width: 100%;}
 #jumin,#jumin2{width:47%;}
 

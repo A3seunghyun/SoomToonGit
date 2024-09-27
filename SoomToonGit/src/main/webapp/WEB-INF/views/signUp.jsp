@@ -18,24 +18,22 @@
 			</a>
 		</div>
 		<div class="content_box">
-<!-- 			<div> -->
-				<h2 id="id2">자스자스자스</h2>
-				<h5>아이디</h5>
-				<input type="text" name="id" id="id"/>
-<!-- 				<select> -->
-<!-- 					<option value="1">naver.com</option> -->
-<!-- 					<option value="1">daum.net</option> -->
-<!-- 					<option>yahoo.com</option> -->
-<!-- 				</select> -->
-<!-- 			</div> -->
+			<h2 id="id2">회원가입</h2>
+			
+			<h5>아이디</h5>
+			<input type="text" name="id" id="id"/>
+			
 			<h5>비밀번호</h5>
 			<input type="text" name="pw" id="pw"/>
+			
 			<h5>이름</h5>
 			<input type="text" name="name" id="name"/>
+			
 			<h5>주민번호</h5>
 			<input type="text" name="jumin" id="jumin"/>
 			-
 			<input type="text" name="jumin2" id="jumin2"/>
+			
 			<div id="btn-box">
 				<input class="signUp-btn" type="submit" value="가입하기"/>
 			</div>

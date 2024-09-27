@@ -10,5 +10,11 @@ window.addEventListener("DOMContentLoaded", function(){
 		} else {
 			alert("로그인 시도 중...");
 		}
+	})
+	
+	let joinMember = document.getElementById("join-member");
+	
+	joinMember.addEventListener("click", function(){
+		location.href = "sign_up";
 	});
 });
