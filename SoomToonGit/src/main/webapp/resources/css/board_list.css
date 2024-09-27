@@ -1,0 +1,137 @@
+@charset "UTF-8";
+
+* {
+	box-sizing: border-box;
+	tab-size: 4;
+	font-family:Pretendard Variable,Pretendard,-apple-system,BlinkMacSystemFont,system-ui,Roboto,Helvetica Neue,Segoe UI,Apple SD Gothic Neo,Noto Sans KR,Malgun Gothic,sans-serif!important;
+}
+
+a {
+	text-decoration: none;
+	color: black;
+}
+
+.main-container {
+	width: 1100px;
+    padding: 20px;
+    margin: 0 auto;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #333;
+    margin: 20px 0;
+}
+
+.search-bar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    position: relative;
+}
+
+.search-option {
+	background-color: white;
+	padding: 10px;
+	font-size: 16px;
+	border: 1px solid #ccc;
+	border-right: 0px;
+	border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+.form-control {
+	border: none;
+	border-radius: 0;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	outline: 0;
+	color: black;
+	font-size: 14px;
+}
+
+.form-control option {
+	color: black;
+	font-size: 14px;
+	text-align: center;
+}
+
+#search-box {
+    width: 300px;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-right: 0px;
+    border-left: 0px;
+    outline: 0;
+}
+
+#search-box::placeholder {
+	color: lightgrey;
+	font-size: 14px;
+}
+
+#search-btn {
+    padding: 6px;
+    font-size: 16px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-left: 0px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    cursor: pointer;
+}
+
+table {
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    border: 0px none;
+    table-layout: fixed;
+}
+
+table .col1 {width: auto;}
+table .col2 {width: 604px;}
+table .col3 {width: 70px;}
+table .col4 {width: auto}
+table .col5 {width: 70px;}
+table .col6 {width: 70px;}
+
+table th, table td {
+    padding: 10px;
+    border-bottom: 1px solid lightgrey;
+    text-align: left;
+}
+
+table th {
+    background-color: #f0f0f0;
+}
+
+.pagination {
+	display: flex;
+    gap: 5px;
+    margin-bottom: 20px;
+    padding-left: 20px;
+    justify-content: space-between;
+}
+
+.pagination-btn {
+    padding: 10px;
+    border-radius: 8px;
+    border: 0px solid white;
+    cursor: pointer;
+    color: rgb(240, 150, 5);
+}
+
+.write-btn {
+    display: flex;
+    padding: 10px 20px;
+    background-color: rgb(240, 150, 5);
+    color: white;
+    border: none;
+    cursor: pointer;
+    justify-content: flex-end;
+    border-radius: 8px;
+}

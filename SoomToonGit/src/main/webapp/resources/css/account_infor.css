@@ -1,0 +1,250 @@
+@charset "UTF-8";
+
+body {
+	font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif
+}
+.full-box{
+	margin:  0px 360px;
+	display: flex;
+	flex-grow: 1;
+	flex-direction: column;
+	align-items: center;
+	position: relative;
+}
+.full-body {
+	width: 956px;
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+}
+.account-infor {
+	padding: 14px 15px;
+	margin: 20px 0px 32px;
+	font-weight: 700;
+	font-size: 21px;
+	line-height: 26px;
+}
+.alias-layout {
+	cursor: pointer;
+}
+.alias-box {
+	padding: 20px 15px;
+	display: flex;
+	align-items: center;
+}
+.alias-innerBox {
+	width:100%;
+	display:flex;
+	flex-direction: column;
+	flex: 1 1 0%;
+}
+.alias {
+	color: rgb(153, 153, 153);
+	margin-bottom: 4px;
+	cursor: pointer;
+	font-size: 12px;
+	font-weight: 400;
+	line-height: 16px;
+}
+.name {
+	cursor: pointer;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 19.6px;
+}
+.under-line {
+	background-color: rgb(229,231,235);
+	height: 1px;
+}
+/*  ======= 여기까지 계정 정보 css  =========*/
+.update-layout {
+	padding-top:32px;
+}
+.update-inner-layout {
+	margin: 0px 15px;
+}
+.alias-text-box {
+	margin-top: 46px;
+	display: flex;
+
+}
+.alias-text {
+	flex-grow: 1;
+	flex-shrink: 1;
+	font-size: 12px;
+	font-weight: 400;
+	line-height: 16px;
+}
+.text-length {
+	font-size: 13px;
+	font-weight: 400;
+	line-height: 18px;
+}
+.text-length2 {
+	color: rgb(122,122,122);
+	font-size: 13px;
+	font-weight: 400;
+	line-height: 18.2px;
+}
+.alias-update-box {
+	line-height: 22.4px;
+	margin-top: 10px;
+}
+.alias-update-inner-box {
+	display: flex;
+	align-items: center;
+	border-radius: 3px;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	height: 48px;
+	line-height: 22.4px;
+	padding:0px 12px 0px;
+}
+.items-center {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	line-height: 22.4px;
+}
+.alias-input {
+	font-size: 13px;
+	font-weight: 400;
+	font-size: 13px;
+	line-height: 18px;
+	border: none;
+	outline: 2px solid transparent;
+    outline-offset: 2px;
+	flex: 1 1 0%;
+	padding: 0;
+}
+button, input {
+	background: none;
+	border: none;
+	padding: 0;
+	font-family: inherit;
+	font-size: 100%;
+	font-weight: inherit;
+	line-height: inherit;
+	color: inherit;
+	overflow: visible;
+}
+.x-button {
+	width: 12px;
+	height: 12px;
+	color: transparent;
+}
+.save {
+	margin-top: 8px;
+	padding: 0px 16px;
+	display: inline-block;
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 22px;
+	text-align: center;
+	align-items: flex-start;
+	background-color: rgb(238,238,238);
+	border-radius: 2px;
+	width:100%;
+	height: 48px;
+	color: rgb(224, 224, 224);
+}
+.save-check {
+	margin-top: 8px;
+	padding: 0px 16px;
+	display: inline-block;
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 22px;
+	text-align: center;
+	align-items: flex-start;
+	background-color: rgb(255,188,0);
+	border-radius: 2px;
+	width:100%;
+	height: 48px;
+}
+/* =========  여기까지 프로필 수정 =========*/
+
+.content-layout {
+	position: relative;
+	height: 100%;
+}
+.content-header {
+	padding: 32px 15px 20px 15px;
+}
+.header-text {
+	font-size: 21px;
+	line-height: 26px;
+	font-weight: 700;
+}
+.content-box {
+	color: rgb(122, 122, 122);
+	
+	line-height: 18px;
+	padding: 0px 15px 32px 15px;
+}
+.conten-inner-box {
+	padding: 0px 0px 12px 7px;
+}
+.content-text {
+    position: relative;
+    margin-bottom: 10px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #555;
+	line-height: 18.2px;
+}
+.content-text::before {
+	content: "•";
+    position: absolute;
+    left: -6px;
+    color: #555;
+    font-size: 6px;
+}
+.check-box {
+	line-height: 22.4px;
+	padding: 0px 15px 0px 15px;
+	width: 100%;
+	background-color: rgb(247, 247, 247);
+}
+.check-box-inner {
+	display : flex;
+	cursor: pointer;
+	line-height: 22.4px;
+	padding: 20px 0px;
+}
+.check-box-check {
+	margin-right: 9px;
+	display: flex;
+	height: 18px;
+	width: 18px;
+	line-height: 22.4px;
+	min-width: fit-content;
+	position: relative;
+}
+.check-box-check-ab {
+	opacity: 0;
+	cursor: pointer;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	padding: 0;	
+}
+.check-text {
+	color: rgb(122,122,122);
+	cursor: pointer;
+	font-size: 13px;
+	font-weight: 400;
+}
+.withdrawal {
+	display: inline-block;
+	cursor: default;
+	color: rgb(224,224,224);
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 22px;
+	overflow: visible;
+	padding: 0px 16px 0px 16px;
+	min-height: 60px;
+	text-align: center;
+	width: 100%;
+	background-color: rgb(238, 238, 238);
+}

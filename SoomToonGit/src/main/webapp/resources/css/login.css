@@ -1,0 +1,74 @@
+@charset "UTF-8";
+* {
+	box-sizing: border-box;
+	tab-size: 4;
+	font-family:Pretendard Variable,Pretendard,-apple-system,BlinkMacSystemFont,system-ui,Roboto,Helvetica Neue,Segoe UI,Apple SD Gothic Neo,Noto Sans KR,Malgun Gothic,sans-serif!important;
+}
+
+a {
+	text-decoration: none;
+	color: black;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 240px;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+}
+
+.login-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.login-table td {
+    padding: 10px;
+    text-align: left;
+    font-size: 14px;
+    color: #333;
+}
+
+.login-table td input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.login-table td input:focus {
+    border-color: rgb(240, 150, 5);
+    outline: none;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: rgb(240, 150, 5);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.login-btn:hover {
+    background-color: rgb(225, 142, 4);
+}
+
+.login-btn:active {
+    background-color: rgb(225, 142, 4);
+}

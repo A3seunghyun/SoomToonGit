@@ -1,0 +1,62 @@
+@charset "UTF-8";
+
+* {
+	box-sizing: border-box;
+	tab-size: 4;
+	font-family:Pretendard Variable,Pretendard,-apple-system,BlinkMacSystemFont,system-ui,Roboto,Helvetica Neue,Segoe UI,Apple SD Gothic Neo,Noto Sans KR,Malgun Gothic,sans-serif!important;
+}
+
+a {
+	text-decoration: none;
+	color: black;
+}
+
+.write_container {
+    width: 50%;
+    margin: 0 auto;
+    margin-top: 20px;
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+.write_form {
+    display: flex;
+    flex-direction: column;
+}
+
+.write_label {
+    font-size: 14px;
+    margin: 10px 0 5px;
+    color: #333;
+}
+
+.write_container input[type="text"], textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+}
+
+.write_container button.submit-btn {
+    background-color: orange;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    align-self: flex-start;
+}
+
+.write_container button.submit-btn:hover {
+    background-color: darkorange;
+}
