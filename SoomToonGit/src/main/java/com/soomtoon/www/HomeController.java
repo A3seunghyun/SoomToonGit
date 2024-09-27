@@ -34,7 +34,7 @@ public class HomeController {
 	
 // 용준
 	// 계정정보
-	@RequestMapping("/")
+	@RequestMapping("/account_infor")
 	public String account_infor(Model model) {
 		System.out.println("계정정보 페이지 들어옴");
 		
