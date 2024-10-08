@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class HomeController {
-	
+	// 테스트 1008 승현
 	@RequestMapping("/webtoonContent")
 	public String webtoonContent() {
 		return "webtoon_content";
