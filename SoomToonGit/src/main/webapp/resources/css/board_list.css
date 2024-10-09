@@ -135,3 +135,9 @@ table th {
     justify-content: flex-end;
     border-radius: 8px;
 }
+
+.board-count {
+	display: flex;
+	justify-content: flex-end;
+	margin: 10px 0px;
+}

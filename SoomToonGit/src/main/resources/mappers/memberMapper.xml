@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PostBoardMapper">
+	<select id="PostBoardListAll" resultType="com.soomtoon.dto.BoardDto">
+		<![CDATA[
+			select p.post_idx, w.toon_name, u.name, p.title, p.post_content, TO_CHAR(p.post_date, 'YYYY-MM-DD'), p.post_view
+			from post p , webtoon w , users u
+			where p.webtoon_idx = w.webtoon_idx
+			and p.user_idx = u.user_idx
+		]]>
+	</select>
+</mapper>

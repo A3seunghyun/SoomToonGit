@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,6 +29,8 @@
 	            <input type="text" placeholder="검색어..." id="search-box" name="searchTerm">
 	            <button type="submit" id="search-btn">🔍</button>
 	        </div>
+	        
+	        <div class="board-count">Total 2건 1 페이지</div>
 	
 	        <table>
 				<colgroup>
@@ -44,14 +47,16 @@
 	                </tr>
 	            </thead>
 	            <tbody>
+	            	<c:forEach var="board" items="${boardAllList}">
 	                <tr>
-	                    <td><a href="${pageContext.request.contextPath}/webtoonContent">나 혼자만 레벨업</a></td>
-	                    <td><a href="${pageContext.request.contextPath}/boardDetail">최신화 빨리 내놔!!!!</a></td>
-	                    <td>장용준</td>
-	                    <td>2024-09-26</td>
-	                    <td>777</td>
-	                    <td>77</td>
+	                    <td><a href="${pageContext.request.contextPath}/webtoonContent">${board.webtoonName}</a></td>
+	                    <td><a href="${pageContext.request.contextPath}/boardDetail">${board.title }</a></td>
+	                    <td>${board.userName}</td>
+	                    <td>${board.postDate}</td>
+	                    <td>${board.postView}</td>
+	                    <td>구현중</td>
 	                </tr>
+	               </c:forEach>
 	            </tbody>
 	        </table>
 	        

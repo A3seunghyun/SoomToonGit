@@ -1,11 +1,20 @@
-package com.soomtoon.www;
+package com.soomtoon.controller;
 
+import java.util.ArrayList;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.soomtoon.dto.BoardDto;
+import com.soomtoon.service.BoardService;
+
 @Controller
 public class HomeController {
+	@Autowired
+	BoardService bSvc;
+	
 	// 테스트 1008 승현
 	@RequestMapping("/webtoonContent")
 	public String webtoonContent() {
@@ -13,7 +22,13 @@ public class HomeController {
 	}
 	
 	@RequestMapping("/freeBulletinBoard")
-	public String freebulletinboard() {
+	public String freebulletinboard(Model model) {
+		System.out.println("자유게시판 이동");
+		ArrayList<BoardDto> boardAllList = bSvc.boardAllList();
+		for(BoardDto dto : boardAllList){
+			System.out.println(dto.getTitle());
+		}
+		model.addAttribute("boardAllList", boardAllList);
 		return "free_bulletin_board";
 	}
 	
@@ -24,7 +39,7 @@ public class HomeController {
 	
 	@RequestMapping("/writePost")
 	public String writePost() {
-		return "write_post";
+		return "write_post"; 
 	}
 	
 	@RequestMapping("/login")
@@ -32,7 +47,7 @@ public class HomeController {
 		return "login";
 	}
 	
-// 용준
+	// 용준
 	// 계정정보
 	@RequestMapping("/account_infor")
 	public String account_infor(Model model) {
