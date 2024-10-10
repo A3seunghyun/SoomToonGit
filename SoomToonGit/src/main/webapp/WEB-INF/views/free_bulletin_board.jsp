@@ -50,10 +50,10 @@
 	            	<c:forEach var="board" items="${boardAllList}">
 	                <tr>
 	                    <td><a href="${pageContext.request.contextPath}/webtoonContent">${board.webtoonName}</a></td>
-	                    <td><a href="${pageContext.request.contextPath}/boardDetail">${board.title }</a></td>
+	                    <td><a href="${pageContext.request.contextPath}/boardDetail?postIdx=${board.postIdx }">${board.title }</a></td>
 	                    <td>${board.userName}</td>
 	                    <td>${board.postDate}</td>
-	                    <td>${board.postView}</td>
+	                    <td style="text-align: center;">${board.postView}</td>
 	                    <td>구현중</td>
 	                </tr>
 	               </c:forEach>

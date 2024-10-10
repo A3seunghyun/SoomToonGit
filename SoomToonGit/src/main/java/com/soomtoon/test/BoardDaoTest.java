@@ -1,6 +1,7 @@
 package com.soomtoon.test;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,6 +36,22 @@ public class BoardDaoTest {
 		try {
 			for(BoardDto dto : bDto) {
 				System.out.println(dto.getUserName());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void testBoardDetail(){
+		Scanner sc = new Scanner(System.in);
+		System.out.print("postIdx : ");
+		int input = sc.nextInt();
+		ArrayList<BoardDto> bDto = dao.getBoardDetailSelect(input);
+		try {
+			for(BoardDto dto : bDto) {
+				System.out.println(dto.getUserName());
+				sc.close();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

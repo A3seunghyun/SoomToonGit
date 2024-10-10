@@ -6,4 +6,5 @@ import com.soomtoon.dto.BoardDto;
 
 public interface BoardService {
 	ArrayList<BoardDto> boardAllList();
+	ArrayList<BoardDto> boardDetail(int postIdx);
 }

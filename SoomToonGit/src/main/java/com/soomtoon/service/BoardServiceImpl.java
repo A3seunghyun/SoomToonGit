@@ -19,4 +19,9 @@ public class BoardServiceImpl implements BoardService{
 		return bDao.getBoardAllSelect();
 	}
 
+	@Override
+	public ArrayList<BoardDto> boardDetail(int postIdx) {
+		return bDao.getBoardDetailSelect(postIdx);
+	}
+
 }

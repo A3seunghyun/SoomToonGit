@@ -13,16 +13,16 @@
 	<jsp:include page="header.jsp"></jsp:include>
 	
 	<div class="container">
-		<h1>나 혼자만 레벨업 최신화 빨리 내놔!!!!</h1>
+		<h1>${boardDetail[0].title }</h1>
 		<div class="post-info">
-			<span class="author">작성자: 장용준</span>
-			<span class="date">작성일: 2024-09-26</span>
-			<span class="views">조회수: 777</span>
-			<span class="comments">댓글수: 77</span>
+			<span class="author">작성자: ${boardDetail[0].userName }</span>
+			<span class="date">작성일: ${boardDetail[0].postDate }</span>
+			<span class="views">조회수: ${boardDetail[0].postView }</span>
+			<span class="comments">댓글수: 구현중</span>
 		</div>
 		<hr>
 		<div class="post-content">
-			<p>최신화 언제 올라오나요? 기다리다 목 빠질 것 같아요!!!</p>
+			<p>${boardDetail[0].postContent }</p>
 		</div>
 		<hr>
 		<button class="back-btn" id="back-btn">목록으로</button>

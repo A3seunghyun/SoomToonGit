@@ -25,15 +25,17 @@ public class HomeController {
 	public String freebulletinboard(Model model) {
 		System.out.println("자유게시판 이동");
 		ArrayList<BoardDto> boardAllList = bSvc.boardAllList();
-		for(BoardDto dto : boardAllList){
-			System.out.println(dto.getTitle());
-		}
+		
 		model.addAttribute("boardAllList", boardAllList);
 		return "free_bulletin_board";
 	}
 	
 	@RequestMapping("/boardDetail")
-	public String boardDetail() {
+	public String boardDetail(Model model, int postIdx) {
+		System.out.println("게시글 상세페이지 이동 : postIdx : " + postIdx);
+		ArrayList<BoardDto> boardDetail = bSvc.boardDetail(postIdx);
+		
+		model.addAttribute("boardDetail", boardDetail);
 		return "board_detail";
 	}
 	
