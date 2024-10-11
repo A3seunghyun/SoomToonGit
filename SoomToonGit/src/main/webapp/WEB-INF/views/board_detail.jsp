@@ -17,7 +17,7 @@
 		<div class="post-info">
 			<span class="author">작성자: ${boardDetail[0].userName }</span>
 			<span class="date">작성일: ${boardDetail[0].postDate }</span>
-			<span class="views">조회수: ${boardDetail[0].postView }</span>
+			<span class="views">조회수: ${boardDetail[0].postView } (구현중)</span>
 			<span class="comments">댓글수: 구현중</span>
 		</div>
 		<hr>

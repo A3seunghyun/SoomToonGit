@@ -2,23 +2,47 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="PostBoardMapper">
+<mapper namespace="WebtoonMapper">
+	<!-- 전체 게시판 조회 -->
 	<select id="PostBoardListAll" resultType="com.soomtoon.dto.BoardDto">
 		<![CDATA[
-			select p.post_idx, w.toon_name, u.name, p.title, p.post_content, TO_CHAR(p.post_date, 'YYYY-MM-DD'), p.post_view
+			select p.post_idx, w.webtoon_idx, w.toon_name, u.name, p.title, p.post_content, TO_CHAR(p.post_date, 'YYYY-MM-DD'), p.post_view
 			from post p , webtoon w , users u
 			where p.webtoon_idx = w.webtoon_idx
 			and p.user_idx = u.user_idx
+			order by p.post_idx DESC
 		]]>
 	</select>
 	
+	<!-- 특정 게시글 상세페이지 -->
 	<select id="PostBoardDetail" resultType="com.soomtoon.dto.BoardDto">
 		<![CDATA[
-			select p.post_idx, w.toon_name, u.name, p.title, p.post_content, TO_CHAR(p.post_date, 'YYYY-MM-DD'), p.post_view
+			select p.post_idx, w.webtoon_idx, w.toon_name, u.name, p.title, p.post_content, TO_CHAR(p.post_date, 'YYYY-MM-DD'), p.post_view
 			from post p , webtoon w , users u
 			where p.webtoon_idx = w.webtoon_idx
 			and p.user_idx = u.user_idx
 			and p.post_idx = #{postIdx}
+		]]>
+	</select>
+	
+	<!-- 특정 웹툰 상세페이지 -->
+	<select id="WebtoonDetail" resultType="com.soomtoon.dto.WebtoonDto">
+		<![CDATA[
+			select * 
+			from webtoon 
+			where webtoon_idx = #{webtoonIdx}
+		]]>
+	</select>
+	
+	<!-- 특정 웹툰 상세페이지 - 게시판 -->
+	<select id="WebtoonBoardList" resultType="com.soomtoon.dto.BoardDto">
+		<![CDATA[
+			select p.post_idx, w.webtoon_idx, w.toon_name, u.name, p.title, p.post_content, TO_CHAR(p.post_date, 'YYYY-MM-DD'), p.post_view
+				from post p , webtoon w , users u
+				where p.webtoon_idx = w.webtoon_idx
+				and p.user_idx = u.user_idx
+	            and w.webtoon_idx = #{webtoonIdx}
+				order by p.post_idx DESC
 		]]>
 	</select>
 </mapper>

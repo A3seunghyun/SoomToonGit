@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.soomtoon.dto.BoardDto;
+import com.soomtoon.dto.WebtoonDto;
 
 @Repository
 public class BoardDaoImpl implements BoardDao{
@@ -17,7 +18,7 @@ public class BoardDaoImpl implements BoardDao{
 	
 	@Override
 	public ArrayList<BoardDto> getBoardAllSelect(){
-		List<BoardDto> list = sqlSession.selectList("PostBoardMapper.PostBoardListAll");
+		List<BoardDto> list = sqlSession.selectList("WebtoonMapper.PostBoardListAll");
 		
 		// List --> ArrayList 변환
 		ArrayList<BoardDto> allList = new ArrayList<BoardDto>();
@@ -33,7 +34,7 @@ public class BoardDaoImpl implements BoardDao{
 		HashMap<String, Integer> hmap = new HashMap<String, Integer>();
 		hmap.put("postIdx", postIdx);
 		
-		List<BoardDto> list =  sqlSession.selectList("PostBoardMapper.PostBoardDetail", hmap);
+		List<BoardDto> list =  sqlSession.selectList("WebtoonMapper.PostBoardDetail", hmap);
 		
 		ArrayList<BoardDto> boardDetail = new ArrayList<BoardDto>();
 		boardDetail.addAll(list);
@@ -41,6 +42,5 @@ public class BoardDaoImpl implements BoardDao{
 		
 		return boardDetail;
 	}
-
 
 }

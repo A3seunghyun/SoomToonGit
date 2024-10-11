@@ -49,7 +49,7 @@
 	            <tbody>
 	            	<c:forEach var="board" items="${boardAllList}">
 	                <tr>
-	                    <td><a href="${pageContext.request.contextPath}/webtoonContent">${board.webtoonName}</a></td>
+	                    <td><a href="${pageContext.request.contextPath}/webtoonContent?webtoonIdx=${board.webtoonIdx }">${board.webtoonName}</a></td>
 	                    <td><a href="${pageContext.request.contextPath}/boardDetail?postIdx=${board.postIdx }">${board.title }</a></td>
 	                    <td>${board.userName}</td>
 	                    <td>${board.postDate}</td>

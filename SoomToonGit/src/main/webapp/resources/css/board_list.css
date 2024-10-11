@@ -12,7 +12,7 @@ a {
 }
 
 .main-container {
-	width: 1100px;
+	width: 1200px;
     padding: 20px;
     margin: 0 auto;
 }
@@ -103,6 +103,10 @@ table th, table td {
     padding: 10px;
     border-bottom: 1px solid lightgrey;
     text-align: left;
+    white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 604px;
 }
 
 table th {
