@@ -22,7 +22,7 @@ public class HomeController {
 	@Autowired
 	WebtoonService wSvc;
 	
-	// 테스트 1008 승현
+	// 특정 웹툰 페이지 - 승현
 	@RequestMapping(value= "/webtoonContent", method = RequestMethod.GET)
 	public String webtoonContent(Model model, @RequestParam("webtoonIdx") int webtoonIdx) {
 		
@@ -45,6 +45,7 @@ public class HomeController {
 		return "webtoon_content";
 	}
 	
+	// 자유게시판 - 승현
 	@RequestMapping("/freeBulletinBoard")
 	public String freebulletinboard(Model model) {
 		System.out.println("자유게시판 이동");
@@ -54,6 +55,7 @@ public class HomeController {
 		return "free_bulletin_board";
 	}
 	
+	// 게시글 상세페이지 - 승현
 	@RequestMapping(value = "/boardDetail", method = RequestMethod.GET)
 	public String boardDetail(Model model, @RequestParam("postIdx") int postIdx) {
 		
