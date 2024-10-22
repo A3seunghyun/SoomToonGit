@@ -19,7 +19,7 @@
 			<div class="webtoon-img">
 				<div class="webtoon-background"></div>
 				<div class="img-container">
-					<img id="webtoonimg-thumbnail" alt="썸네일" src="//${webtoonDetail[0].webtoonImg }">
+					<img id="webtoonimg-thumbnail" alt="썸네일" src="${webtoonDetail[0].webtoonImg }">
 				</div>
 			</div>
 		</div>
