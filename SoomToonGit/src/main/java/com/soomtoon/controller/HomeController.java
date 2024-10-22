@@ -168,7 +168,7 @@ public class HomeController {
 		ms.memberInsert(dto);
 //		MemberDto dto2 = dto;
 //		System.out.println(dto2);
-		return "soomtoon_daily";
+		return "login";
 	}
 	
 }
