@@ -10,7 +10,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 window.addEventListener('DOMContentLoaded', function () {
-	
+	  document.getElementById("daily").addEventListener("click", function(){
+	    location.href = "${pageContext.request.contextPath}/";  // 이동할 경로를 설정
+	  });
 	});
 </script>
 <body>

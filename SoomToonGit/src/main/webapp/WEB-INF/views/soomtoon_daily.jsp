@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,25 +14,62 @@
 $(function(){
 	$(".daily-text").click(function(){
 		let checked = $(this).text();
+		let dayWeek = $(this).data('day'); 
+		// 클릭한 요일의 day 값을 뽑음
 		
+		
+		// 모든 daily-subtab-check를 숨기고 daily-text를 보이게
 		$(".daily-subtab-check").hide();
 		$(".daily-text").show();
+
+		// 클릭한 요일에 해당하는 요소만 표시
+		$(this).hide(); // 클릭한 daily-text는 숨김
+		$(".daily-subtab-check[data-day='" + dayWeek + "']").show(); // 해당 요일을 체크 상태로
 		
-		$(this).hide();
-		$(".daily-subtab-check").each(function(){
-			if($(this).text() === checked) {
-				$(this).show();
-			}
-		});
+		location.href="${pageContext.request.contextPath}/?day_week=" + dayWeek;
+		
+// 		$(".daily-subtab-check").each(function(){
+// 			if($(this).text() === checked) {
+// 				$(this).show();
+// 			} else {
+// 				$(this).hide();
+// 			}
+// 		});
+		
+		
+		
+//		// ajax 요청으로 day_week값 전달
+// 		$.ajax({
+// 			type: 'GET',
+// 			url: '${pageContext.request.contextPath}/',
+// 			data: {day_week: dayWeek},
+// 			success: function(response) {
+// 				//웹툰 목록을 성공으로 받아왔을 떄 화면 갱신 처리
+				
+// 				let htmlContent = '';
+				
+// 				response.forEach(function(items){
+// 					htmlContent += `<div class="content">
+// 										<img class="content-img" src="${dto.toon_img }"/>
+// 									</div>`;
+// 				});
+// 			 $('.content-layout-inner').html(htmlContent); // 웹툰 목록 갱신
+// 				console.log("ajax 성공");
+// 			},
+// 			error: function(xhr, status, error){
+// 				console.log("ajax 에러 발생:", error);
+// 			}
+// 		});
+
+
+
 	});		
+	
+	$("#rank").click(function(){
+		console.log("클릭됨");
+		location.href="${pageContext.request.contextPath}/soomtoon_rank";
+	});
 }); /* $(function) 마지막 중괄호 */
-
-
-
-
-
-
-
 
 </script>
 <body>
@@ -64,69 +103,46 @@ $(function(){
 		<div class="content-box">
 			<div class="daily-tab">
 				<div class="daily-subtab">
-					<div style="display: block" class="daily-subtab-check">월</div>
-					<span style="display: none" class="daily-text">월</span>
-					<div class="daily-subtab-check">화</div>
-					<span class="daily-text">화</span>
-					<div class="daily-subtab-check">수</div>
-					<span class="daily-text">수</span>
-					<div class="daily-subtab-check">목</div>
-					<span class="daily-text">목</span>
-					<div class="daily-subtab-check">금</div>
-					<span class="daily-text">금</span>
-					<div class="daily-subtab-check">토</div>
-					<span class="daily-text">토</span>
-					<div class="daily-subtab-check">일</div>
-					<span class="daily-text">일</span>
+					<div style="display: block" class="daily-subtab-check" data-day="1">월</div>
+					<span style="display: none" class="daily-text" data-day="1">월</span>
+					<div class="daily-subtab-check" data-day="2">화</div>
+					<span class="daily-text" data-day="2">화</span>
+					<div class="daily-subtab-check" data-day="3">수</div>
+					<span class="daily-text" data-day="3">수</span>
+					<div class="daily-subtab-check" data-day="4">목</div>
+					<span class="daily-text" data-day="4">목</span>
+					<div class="daily-subtab-check" data-day="5">금</div>
+					<span class="daily-text" data-day="5">금</span>
+					<div class="daily-subtab-check" data-day="6">토</div>
+					<span class="daily-text" data-day="6">토</span>
+					<div class="daily-subtab-check" data-day="7">일</div>
+					<span class="daily-text" data-day="7">일</span>
 				</div>
 			</div>
 			<div class="daily-count">요일별 웹툰수 (10)</div>
 			<div class="content-layout">
 				<div class="content-layout-inner">
-					<div class="content">
-<!-- 						<span class="toon-name" style="display:none">철혈검가 사냥개의 회귀</span> -->
-<!-- 						 이름 심어주고 글쓰기 할때 넘김 -->
-						<img class="content-img" src="https://dn-img-page.kakao.com/download/resource?kid=ce6uuq/hAFPLGEMcw/YYiwupIsDFxr6fdMXrxPtK&filename=th3"/>
-						<div class="content-title-box">
-							<img class="content-title-img" src="https://dn-img-page.kakao.com/download/resource?kid=bdlC8x/hAFrO4XUyJ/3D1mutZDVXIOekDxKlVhUk&filename=th3"/>
+				<c:if test="${not empty list }">
+					<c:forEach var="dto" items="${list}">
+						<div class="content">
+<%-- 							<span class="toon-name" style="display:none">${dto.toon_name}</span> --%>
+	<!-- 						 이름 심어주고 글쓰기 할때 넘김 -->
+							<img class="content-img" src="${dto.toon_img }"/>
+<!-- 							<div class="content-title-box"> -->
+<!-- 								<img class="content-title-img" src="https://dn-img-page.kakao.com/download/resource?kid=bdlC8x/hAFrO4XUyJ/3D1mutZDVXIOekDxKlVhUk&filename=th3"/> -->
+<!-- 							</div> -->
 						</div>
-					</div>
-					<div class="content">
-						<img class="content-img" src="https://dn-img-page.kakao.com/download/resource?kid=lTa2m/hAC1SVDnhO/ida7wlLNIWrVLNrYa2ugeK&filename=th3"/>
-						<div class="content-title-box">
-							<img class="content-title-img" src="https://dn-img-page.kakao.com/download/resource?kid=QduFp/hzN2jQlN7G/jskbiPqVnwISro4B2wHwKK&filename=th3"/>
-						</div>
-					</div>
-					<div class="content">
-						<img class="content-img" src="https://dn-img-page.kakao.com/download/resource?kid=lTa2m/hAC1SVDnhO/ida7wlLNIWrVLNrYa2ugeK&filename=th3"/>
-						<div class="content-title-box">
-							<img class="content-title-img" src="https://dn-img-page.kakao.com/download/resource?kid=QduFp/hzN2jQlN7G/jskbiPqVnwISro4B2wHwKK&filename=th3"/>
-						</div>
-					</div>
-					<div class="content">
-						<img class="content-img" src="https://dn-img-page.kakao.com/download/resource?kid=lTa2m/hAC1SVDnhO/ida7wlLNIWrVLNrYa2ugeK&filename=th3"/>
-						<div class="content-title-box">
-							<img class="content-title-img" src="https://dn-img-page.kakao.com/download/resource?kid=QduFp/hzN2jQlN7G/jskbiPqVnwISro4B2wHwKK&filename=th3"/>
-						</div>
-					</div>
-					<div class="content">
-						<img class="content-img" src="https://dn-img-page.kakao.com/download/resource?kid=lTa2m/hAC1SVDnhO/ida7wlLNIWrVLNrYa2ugeK&filename=th3"/>
-						<div class="content-title-box">
-							<img class="content-title-img" src="https://dn-img-page.kakao.com/download/resource?kid=QduFp/hzN2jQlN7G/jskbiPqVnwISro4B2wHwKK&filename=th3"/>
-						</div>
-					</div>
-					<div class="content">
-						<img class="content-img" src="https://dn-img-page.kakao.com/download/resource?kid=lTa2m/hAC1SVDnhO/ida7wlLNIWrVLNrYa2ugeK&filename=th3"/>
-						<div class="content-title-box">
-							<img class="content-title-img" src="https://dn-img-page.kakao.com/download/resource?kid=QduFp/hzN2jQlN7G/jskbiPqVnwISro4B2wHwKK&filename=th3"/>
-						</div>
-					</div>
+					</c:forEach>
+				</c:if>	
+				<c:if test="${empty list }"	>
+					<p>해당 요일의 웹툰이 없습니다.</p>
+				</c:if>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
 <jsp:include page="footer.jsp"></jsp:include>
-<script type="text/javascript" src="resources/js/soomtoon_daily.js"></script>
+<!-- <script type="text/javascript" src="resources/js/soomtoon_daily.js"></script> -->
 </body>
 </html>
