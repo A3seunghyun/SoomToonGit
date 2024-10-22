@@ -10,8 +10,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.soomtoon.dto.BoardDto;
+import com.soomtoon.dto.MemberDto;
+import com.soomtoon.dto.SoomtoonDto;
 import com.soomtoon.dto.WebtoonDto;
 import com.soomtoon.service.BoardService;
+import com.soomtoon.service.MemberService;
+import com.soomtoon.service.SoomtoonService;
 import com.soomtoon.service.WebtoonService;
 
 @Controller
@@ -88,8 +92,14 @@ public class HomeController {
 	
 	
 	// 용준
+	@Autowired
+	MemberService ms;
+	
+	@Autowired
+	SoomtoonService ss;
+	
 	// 계정정보
-	@RequestMapping("/account_infor")
+	@RequestMapping(value= "/account_infor")
 	public String account_infor(Model model) {
 		System.out.println("계정정보 페이지 들어옴");
 		
@@ -113,25 +123,52 @@ public class HomeController {
 	}
 	
 	// 요일 웹툰
-	@RequestMapping("/soomtoon_daily")
-	public String soomtoon_daily(Model model) {
+	@RequestMapping(value= "/")
+	public String soomtoon_daily(String day_week, Model model) {
+		if(day_week == null) {
+			day_week = "1";
+		}
+		
+		ArrayList<SoomtoonDto> list = ss.getSoomtoonList(day_week);
+		System.out.println("웹툰 리스트:" + list);
+		
+		model.addAttribute("day_week", day_week);
+		model.addAttribute("list",list);
 		
 		return "soomtoon_daily";
 	}
 	
-	// 실시간 웹툰
-	@RequestMapping("/soomtoon_rank")
+	// 실시간 웹툰 
+	@RequestMapping(value= "/soomtoon_rank")
 	public String soomtoon_rank(Model model) {
 		
 		return "soomtoon_rank";
 	}
 	
+	// 게시글 쓰기
+	@RequestMapping(value= "/soomtoon_insert")
+	public String soomtoon_insert(Model model) {
+		
+		return "soomtoon_insert";
+	}
+	
 	// 회원가입
-	@RequestMapping("/sign_up")
+	@RequestMapping(value= "/sign_up")
 	public String signUP(Model model) {
 		System.out.println("회원가입창 들어옴");
 		
 		return "signUp";
+	}
+	
+	// 회원등록
+	@RequestMapping("/insert_member")
+	public String insertMember(Model model, MemberDto dto) {
+		System.out.println("회원가입 정보 들어옴");
+
+		ms.memberInsert(dto);
+//		MemberDto dto2 = dto;
+//		System.out.println(dto2);
+		return "soomtoon_daily";
 	}
 	
 }
