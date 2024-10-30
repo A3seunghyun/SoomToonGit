@@ -2,6 +2,8 @@ package com.soomtoon.controller;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -80,10 +82,6 @@ public class HomeController {
 		return "write_post"; 
 	}
 	
-	@RequestMapping("/login")
-	public String login() {
-		return "login";
-	}
 	
 	@RequestMapping("/error")
 	public String errorPage() {
@@ -123,7 +121,7 @@ public class HomeController {
 	}
 	
 	// 요일 웹툰
-	@RequestMapping(value= "/")
+	@RequestMapping(value= "/main")
 	public String soomtoon_daily(String day_week, Model model) {
 		if(day_week == null) {
 			day_week = "1";
@@ -169,6 +167,38 @@ public class HomeController {
 //		MemberDto dto2 = dto;
 //		System.out.println(dto2);
 		return "login";
+	}
+	
+	// 로그인 페이지 - 승현
+	@RequestMapping("/login")
+	public String loginForm() {
+		return "login";
+	}
+	
+	// 로그인처리 - 승현
+	@RequestMapping(value="/login", method = RequestMethod.POST)
+	public String login(@RequestParam("id") String id, @RequestParam("pw") String pw,
+						HttpSession session, Model model, MemberDto dto) {
+		boolean loginResult = ms.login(id, pw);
+		if(loginResult) {
+			MemberDto userDto = ms.userInfo(id, pw);
+			session.setAttribute("userId", id);
+			session.setAttribute("userInfo", userDto);
+			return "soomtoon_daily";
+		} else {
+			model.addAttribute("errorMessage", "로그인 실패: 아이디 또는 비밀번호가 잘못되었습니다.");
+			return "login";
+		}
+	}
+	
+	// 로그아웃 - 승현
+	@RequestMapping(value="/logout")
+	public String logout(HttpSession session) {
+		if (session != null) {
+	        session.invalidate();
+	    }
+		
+		return "soomtoon_daily";
 	}
 	
 }

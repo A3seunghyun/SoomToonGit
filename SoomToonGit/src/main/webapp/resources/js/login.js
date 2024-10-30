@@ -7,8 +7,6 @@ window.addEventListener("DOMContentLoaded", function(){
                
 		if (username === "" || password === "") {
 			alert("아이디와 비밀번호를 입력하세요.");
-		} else {
-			alert("로그인 시도 중...");
 		}
 	})
 	
@@ -16,5 +14,6 @@ window.addEventListener("DOMContentLoaded", function(){
 	
 	joinMember.addEventListener("click", function(){
 		location.href = "sign_up";
-	});
+	})
+
 });

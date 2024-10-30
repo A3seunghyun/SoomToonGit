@@ -13,4 +13,24 @@
 		FROM users
 		WHERE ID = #{id}
 	</select>
+	
+	<!-- 승현 로그인 -->
+	<select id="login" resultType="int">
+		<![CDATA[
+			SELECT count(*) 
+			FROM users 
+			WHERE id=#{id} 
+			AND pw=#{pw}
+		]]>
+	</select>
+	
+	<!-- 승현 유저정보 -->
+	<select id="userInfo" resultType="com.soomtoon.dto.MemberDto">
+		<![CDATA[
+			SELECT * 
+			FROM users 
+			WHERE id=#{id} 
+			AND pw=#{pw}
+		]]>
+	</select>
 </mapper>

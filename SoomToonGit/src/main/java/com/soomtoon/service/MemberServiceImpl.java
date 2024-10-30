@@ -21,4 +21,15 @@ public class MemberServiceImpl implements MemberService {
 		int result =  dao.selectId(id); // 1이면 중복
 		return result;
 	}
+
+	@Override
+	public boolean login(String id, String pw) {
+		boolean login =  dao.login(id, pw);
+		return login;
+	}
+
+	@Override
+	public MemberDto userInfo(String id, String pw) {
+		return dao.userInfo(id, pw);
+	}
 }

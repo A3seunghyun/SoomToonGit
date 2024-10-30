@@ -13,14 +13,17 @@
 	<div class="write_container">
 		<h1>게시글 작성</h1>
 		<form class="write_form" method="post">
+			<label class="write_label" for="webtoon_name">웹툰명:</label>
+			<input type="text" id="webtoon_name" name="webtoon_name" readonly required>
+		
 			<label class="write_label" for="title">제목:</label>
 			<input type="text" id="title" name="title" required>
 
 			<label class="write_label" for="author">작성자:</label>
-			<input type="text" id="author" name="author" required>
+			<input type="text" id="author" name="author" value="${userInfo.alias }" readonly>
 
 			<label class="write_label" for="content">내용:</label>
-			<textarea id="content" name="content" rows="10" required></textarea>
+			<textarea style="resize: none;" id="content" name="content" rows="10" required></textarea>
 
 			<button type="submit" class="submit-btn">작성 완료</button>
 		</form>
