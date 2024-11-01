@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.soomtoon.dao.BoardDao;
 import com.soomtoon.dto.BoardDto;
+import com.soomtoon.dto.BoardInsertDto;
 
 
 @Service
@@ -22,6 +23,11 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public ArrayList<BoardDto> boardDetail(int postIdx) {
 		return bDao.getBoardDetailSelect(postIdx);
+	}
+
+	@Override
+	public void boardInsert(BoardInsertDto dto) {
+		bDao.boardInsert(dto);
 	}
 
 }

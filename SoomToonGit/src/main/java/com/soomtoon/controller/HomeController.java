@@ -7,11 +7,13 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.soomtoon.dto.BoardDto;
+import com.soomtoon.dto.BoardInsertDto;
 import com.soomtoon.dto.MemberDto;
 import com.soomtoon.dto.SoomtoonDto;
 import com.soomtoon.dto.WebtoonDto;
@@ -82,6 +84,13 @@ public class HomeController {
 		return "write_post"; 
 	}
 	
+	// 게시글 쓰기
+	@RequestMapping(value= "/writePost", method = RequestMethod.POST)
+	public String soomtoon_insert(Model model, @ModelAttribute BoardInsertDto dto) {
+		System.out.println("사용자 IDX : " + dto.getUserIdx());
+		bSvc.boardInsert(dto);
+		return "redirect:/freeBulletinBoard";
+	}
 	
 	@RequestMapping("/error")
 	public String errorPage() {
@@ -143,13 +152,6 @@ public class HomeController {
 		return "soomtoon_rank";
 	}
 	
-	// 게시글 쓰기
-	@RequestMapping(value= "/soomtoon_insert")
-	public String soomtoon_insert(Model model) {
-		
-		return "soomtoon_insert";
-	}
-	
 	// 회원가입
 	@RequestMapping(value= "/sign_up")
 	public String signUP(Model model) {
@@ -184,7 +186,7 @@ public class HomeController {
 			MemberDto userDto = ms.userInfo(id, pw);
 			session.setAttribute("userId", id);
 			session.setAttribute("userInfo", userDto);
-			return "soomtoon_daily";
+			return "redirect:/main";
 		} else {
 			model.addAttribute("errorMessage", "로그인 실패: 아이디 또는 비밀번호가 잘못되었습니다.");
 			return "login";
@@ -198,7 +200,7 @@ public class HomeController {
 	        session.invalidate();
 	    }
 		
-		return "soomtoon_daily";
+		return "redirect:/main";
 	}
 	
 }

@@ -10,4 +10,14 @@
 		FROM webtoon
 		WHERE day_week = #{day_week}
 	</select>
+	
+		<!-- 승현 웹툰 검색 리스트 -->
+	<select id="toonSearchList" resultType="com.soomtoon.dto.WebtoonDto">
+		<![CDATA[
+			SELECT * 
+			FROM WEBTOON 
+			WHERE toon_name LIKE '%' || #{webtoonName} || '%' 
+			ORDER BY webtoon_idx ASC 
+		]]>
+	</select>
 </mapper>

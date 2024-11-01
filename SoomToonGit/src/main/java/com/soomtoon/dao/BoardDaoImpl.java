@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.soomtoon.dto.BoardDto;
-import com.soomtoon.dto.WebtoonDto;
+import com.soomtoon.dto.BoardInsertDto;
 
 @Repository
 public class BoardDaoImpl implements BoardDao{
@@ -41,6 +41,11 @@ public class BoardDaoImpl implements BoardDao{
 		
 		
 		return boardDetail;
+	}
+
+	@Override
+	public void boardInsert(BoardInsertDto dto) {
+		sqlSession.insert("WebtoonMapper.BoardInsert", dto);
 	}
 
 }

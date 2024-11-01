@@ -41,5 +41,19 @@ public class WebtoonDaoImpl implements WebtoonDao {
 		webtoonBoardList.addAll(list);
 		return webtoonBoardList;
 	}
+
+	@Override
+	public ArrayList<WebtoonDto> getWebtoonSearchSelect(String webtoonName) {
+		HashMap<String, String> hmap = new HashMap<String, String>();
+		hmap.put("webtoonName", webtoonName);
+		
+		List<WebtoonDto> list = sqlSession.selectList("SoomtoonMapper.toonSearchList", hmap);
+		
+		ArrayList<WebtoonDto> webtoonSearchList = new ArrayList<WebtoonDto>();
+		
+		webtoonSearchList.addAll(list);
+		
+		return webtoonSearchList;
+	}
 	
 }

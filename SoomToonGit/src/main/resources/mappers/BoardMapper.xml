@@ -45,4 +45,9 @@
 				order by p.post_idx DESC
 		]]>
 	</select>
+	
+	<select id="BoardInsert">
+		INSERT INTO POST(post_idx, webtoon_idx, user_idx, title, post_content, post_date) 
+		VALUES(seq_post_idx.nextval, #{webtoonIdx}, #{userIdx}, #{postTitle}, #{postContent}, sysdate)
+	</select>
 </mapper>

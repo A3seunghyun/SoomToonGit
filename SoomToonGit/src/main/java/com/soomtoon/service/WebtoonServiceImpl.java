@@ -24,4 +24,9 @@ public class WebtoonServiceImpl implements WebtoonService{
 		return wDao.getWebtoobBoardListSelect(webtoonIdx);
 	}
 
+	@Override
+	public ArrayList<WebtoonDto> getWebtoonSearchSelect(String webtoonName) {
+		return wDao.getWebtoonSearchSelect(webtoonName);
+	}
+
 }
