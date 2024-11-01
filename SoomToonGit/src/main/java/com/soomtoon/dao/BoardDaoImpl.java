@@ -48,4 +48,20 @@ public class BoardDaoImpl implements BoardDao{
 		sqlSession.insert("WebtoonMapper.BoardInsert", dto);
 	}
 
+	@Override
+	public void boardDelete(int postIdx) {
+		sqlSession.delete("WebtoonMapper.BoardDelete", postIdx);
+	}
+
+	@Override
+	public void boardUpdate(int postIdx, int webtoonIdx, String postTitle, String postContent) {
+		HashMap<String, Object> hmap = new HashMap<String, Object>();
+		hmap.put("postIdx", postIdx);
+		hmap.put("webtoonIdx", webtoonIdx);
+		hmap.put("postTitle", postTitle);
+		hmap.put("postContent", postContent);
+		
+		sqlSession.update("WebtoonMapper.BoardEdit", hmap);
+	}
+
 }

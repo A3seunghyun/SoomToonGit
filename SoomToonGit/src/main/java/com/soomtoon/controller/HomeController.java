@@ -65,17 +65,24 @@ public class HomeController {
 	
 	// 게시글 상세페이지 - 승현
 	@RequestMapping(value = "/boardDetail", method = RequestMethod.GET)
-	public String boardDetail(Model model, @RequestParam("postIdx") int postIdx) {
+	public String boardDetail(HttpSession session, Model model, @RequestParam("postIdx") int postIdx) {
+		String userId = (String) session.getAttribute("userId"); // 로그인한 사용자 IDX
+		System.out.println("유저ID : " + userId);
 		
 		if(postIdx < 1) {
 			System.out.println("게시글 상세페이지 이동중 오류발생");
 			return "error_page";
 		}
 		
-		System.out.println("게시글 상세페이지 이동 : postIdx : " + postIdx);
+		System.out.println("게시글 상세페이지 이동 : postIdx => " + postIdx);
 		ArrayList<BoardDto> boardDetail = bSvc.boardDetail(postIdx);
 		
+		BoardDto bDto = boardDetail.get(0);
+		System.out.println("게시글작성 ID : " + bDto.getUserId());
+		
 		model.addAttribute("boardDetail", boardDetail);
+		model.addAttribute("userId", userId);
+		
 		return "board_detail";
 	}
 	
@@ -89,6 +96,38 @@ public class HomeController {
 	public String soomtoon_insert(Model model, @ModelAttribute BoardInsertDto dto) {
 		System.out.println("사용자 IDX : " + dto.getUserIdx());
 		bSvc.boardInsert(dto);
+		return "redirect:/freeBulletinBoard";
+	}
+	
+	// 게시글 수정 페이지
+	@RequestMapping(value= "/editPage", method = RequestMethod.POST)
+	public String editPage(Model model, 
+							@RequestParam("postIdx") int postIdx,
+							@RequestParam("postTitle") String postTitle,
+							@RequestParam("postContent") String postContent) {
+		model.addAttribute("postIdx", postIdx);
+		model.addAttribute("postTitle", postTitle);
+		model.addAttribute("postContent", postContent);
+		
+		return "edit_page";
+	}
+	
+	// 게시글 수정 기능
+	@RequestMapping(value= "/editPost", method = RequestMethod.POST)
+	public String soomtoon_update(Model model, @RequestParam("postIdx") int postIdx, 
+												@RequestParam("webtoonIdx") int webtoonIdx, 
+												@RequestParam("postTitle") String postTitle, 
+												@RequestParam("postContent") String postContent) {
+		System.out.println("수정 테스트 게시글 IDX : " + postIdx);
+		bSvc.boardUpdate(postIdx, webtoonIdx, postTitle, postContent);
+		return "redirect:/boardDetail?postIdx=" + postIdx;
+	}
+	
+	// 게시글 삭제
+	@RequestMapping(value= "/deletePost", method = RequestMethod.GET)
+	public String soomtoon_delete(Model model, @RequestParam("postIdx") int postIdx) {
+		System.out.println("삭제 테스트 게시글 IDX : " + postIdx);
+		bSvc.boardDelete(postIdx);
 		return "redirect:/freeBulletinBoard";
 	}
 	

@@ -7,6 +7,8 @@ import com.soomtoon.dto.WebtoonDto;
 
 public interface WebtoonDao {
 	ArrayList<WebtoonDto> getWebtoonDetailSelect(int webtoonIdx);
+	
 	ArrayList<BoardDto> getWebtoobBoardListSelect(int webtoonIdx);
+	
 	ArrayList<WebtoonDto> getWebtoonSearchSelect(String webtoonName);
 }

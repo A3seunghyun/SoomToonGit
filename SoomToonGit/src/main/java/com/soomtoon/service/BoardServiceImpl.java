@@ -30,4 +30,15 @@ public class BoardServiceImpl implements BoardService{
 		bDao.boardInsert(dto);
 	}
 
+	@Override
+	public void boardDelete(int postIdx) {
+		bDao.boardDelete(postIdx);
+	}
+
+	@Override
+	public void boardUpdate(int postIdx, int webtoonIdx, String postTitle, String postContent) {
+		bDao.boardUpdate(postIdx, webtoonIdx, postTitle, postContent);
+	}
+
+
 }

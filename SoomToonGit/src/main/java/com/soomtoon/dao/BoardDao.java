@@ -9,4 +9,6 @@ public interface BoardDao {
 	ArrayList<BoardDto> getBoardAllSelect();
 	ArrayList<BoardDto> getBoardDetailSelect(int postIdx);
 	void boardInsert(BoardInsertDto dto);
+	void boardDelete(int postIdx);
+	void boardUpdate(int postIdx, int webtoonIdx, String postTitle, String postContent);
 }

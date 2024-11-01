@@ -4,17 +4,19 @@ public class BoardDto {
 	private int postIdx;
 	private int webtoonIdx;
 	private String webtoonName;
+	private String userId;
 	private String userName;
 	private String title;
 	private String postContent;
 	private String postDate;
 	private int postView;
 	
-	public BoardDto(int postIdx, int webtoonIdx, String webtoonName, String userName, String title, String postContent,
-			String postDate, int postView) {
+	public BoardDto(int postIdx, int webtoonIdx, String webtoonName, String userId, String userName, String title,
+			String postContent, String postDate, int postView) {
 		this.postIdx = postIdx;
 		this.webtoonIdx = webtoonIdx;
 		this.webtoonName = webtoonName;
+		this.userId = userId;
 		this.userName = userName;
 		this.title = title;
 		this.postContent = postContent;
@@ -44,6 +46,14 @@ public class BoardDto {
 
 	public void setWebtoonName(String webtoonName) {
 		this.webtoonName = webtoonName;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getUserName() {

@@ -6,7 +6,7 @@
 	<!-- 전체 게시판 조회 -->
 	<select id="PostBoardListAll" resultType="com.soomtoon.dto.BoardDto">
 		<![CDATA[
-			select p.post_idx, w.webtoon_idx, w.toon_name, u.name, p.title, p.post_content, TO_CHAR(p.post_date, 'YYYY-MM-DD'), p.post_view
+			select p.post_idx, w.webtoon_idx, w.toon_name, u.id, u.name, p.title, p.post_content, TO_CHAR(p.post_date, 'YYYY-MM-DD'), p.post_view
 			from post p , webtoon w , users u
 			where p.webtoon_idx = w.webtoon_idx
 			and p.user_idx = u.user_idx
@@ -17,7 +17,7 @@
 	<!-- 특정 게시글 상세페이지 -->
 	<select id="PostBoardDetail" resultType="com.soomtoon.dto.BoardDto">
 		<![CDATA[
-			select p.post_idx, w.webtoon_idx, w.toon_name, u.name, p.title, p.post_content, TO_CHAR(p.post_date, 'YYYY-MM-DD'), p.post_view
+			select p.post_idx, w.webtoon_idx, w.toon_name, u.id, u.name, p.title, p.post_content, TO_CHAR(p.post_date, 'YYYY-MM-DD'), p.post_view
 			from post p , webtoon w , users u
 			where p.webtoon_idx = w.webtoon_idx
 			and p.user_idx = u.user_idx
@@ -37,7 +37,7 @@
 	<!-- 특정 웹툰 상세페이지 - 게시판 -->
 	<select id="WebtoonBoardList" resultType="com.soomtoon.dto.BoardDto">
 		<![CDATA[
-			select p.post_idx, w.webtoon_idx, w.toon_name, u.name, p.title, p.post_content, TO_CHAR(p.post_date, 'YYYY-MM-DD'), p.post_view
+			select p.post_idx, w.webtoon_idx, w.toon_name, u.id, u.name, p.title, p.post_content, TO_CHAR(p.post_date, 'YYYY-MM-DD'), p.post_view
 				from post p , webtoon w , users u
 				where p.webtoon_idx = w.webtoon_idx
 				and p.user_idx = u.user_idx
@@ -49,5 +49,20 @@
 	<select id="BoardInsert">
 		INSERT INTO POST(post_idx, webtoon_idx, user_idx, title, post_content, post_date) 
 		VALUES(seq_post_idx.nextval, #{webtoonIdx}, #{userIdx}, #{postTitle}, #{postContent}, sysdate)
+	</select>
+	
+	<select id="BoardDelete">
+		DELETE 
+		FROM post 
+		WHERE post_idx = #{postIdx}
+	</select>
+	
+	<select id="BoardEdit">
+		UPDATE post 
+		SET 
+		webtoon_idx = #{webtoonIdx}, 
+		title = #{postTitle}, 
+		post_content = #{postContent} 
+		WHERE post_idx = #{postIdx}
 	</select>
 </mapper>

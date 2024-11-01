@@ -9,4 +9,6 @@ public interface BoardService {
 	ArrayList<BoardDto> boardAllList();
 	ArrayList<BoardDto> boardDetail(int postIdx);
 	void boardInsert(BoardInsertDto dto);
+	void boardDelete(int postIdx);
+	void boardUpdate(int postIdx, int webtoonIdx, String postTitle, String postContent);
 }
