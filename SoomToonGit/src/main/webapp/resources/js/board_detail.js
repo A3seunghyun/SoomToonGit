@@ -49,4 +49,26 @@ window.addEventListener("DOMContentLoaded", function(){
     editBtn.addEventListener("click", function(){
     	
     });
+    
 });
+
+function showReplyForm(button) {
+    let replies = button.parentElement.querySelector('.replies');
+    
+    // replies이 존재하는 경우 표시/숨김 전환
+    if (replies) {
+        replies.style.display = replies.style.display === 'none' ? 'block' : 'none';
+    }
+};
+
+document.getElementById("registration-btn").onclick = function(event) {
+    // 댓글 입력 필드의 값을 가져옵니다.
+    let commentInput = document.getElementById("commentInput");
+    
+    // 댓글 내용이 비어 있는지 확인합니다.
+    if (commentInput.value.trim() === "") {
+        alert("댓글을 입력해주세요."); // 경고 메시지 표시
+        event.preventDefault(); // 폼 제출을 막습니다.
+        commentInput.focus(); // 입력 필드에 포커스를 맞춥니다.
+    }
+};

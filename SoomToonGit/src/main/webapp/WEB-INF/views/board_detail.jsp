@@ -18,8 +18,8 @@
 		<div class="post-info">
 			<span class="author">작성자: ${boardDetail[0].userName }</span>
 			<span class="date">작성일: ${boardDetail[0].postDate }</span>
-			<span class="views">조회수: ${boardDetail[0].postView } (구현중)</span>
-			<span class="comments">댓글수: 구현중</span>
+			<span class="views">조회수: ${boardDetail[0].postView }</span>
+			<span class="comments">댓글수: ${boardDetail[0].commentCount + boardDetail[0].childCommentCount }</span>
 		</div>
 		<hr>
 		<div class="post-content">
@@ -38,7 +38,62 @@
     		</form>
 		</c:if>
 	</div>
+	<!-- 댓글 섹션 시작 -->
+    <div class="comments-section">
+        <h3>댓글</h3>
+
+        <!-- 댓글 입력 창 -->
+        <c:if test="${not empty sessionScope.userId}">
+	        <div class="comment-form">
+	        	<form action="${pageContext.request.contextPath}/writeComment" method="post" style="display: flex;">
+		        	<input type="hidden" id="postIdx" name="postIdx" value="${boardDetail[0].postIdx}">
+		        	<input type="hidden" id="userIdx" name="userIdx" value="${userInfo.user_idx}">
+		            <input type="text" id="commentInput" name="content" placeholder="댓글을 입력하세요." value="">
+		            <button type="submit" class="registration-btn" id="registration-btn" style="width: 60px;">등록</button>
+	            </form>
+	        </div>
+        </c:if>
+
+        <!-- 댓글 목록 -->
+        <div id="commentsList">
+        	<c:forEach var="comments" items="${boardComments}">
+	            <div class="comment">
+	                <span class="author">${comments.userName }</span>
+	                <span class="date">${comments.commentDate}</span>
+	                <p class="comment-content">${comments.content}</p>
+	                <button class="reply-btn" onclick="showReplyForm(this)">답글</button>
 	
+	                <!-- 댓글 답변 목록 -->
+	                <div class="replies" style="display: none;">
+	                	<c:forEach var="childComments" items="${childComments }">
+	                		<c:if test="${comments.commentIdx == childComments.commentIdx}">
+			                    <div class="reply">
+			                        <span class="author">${childComments.userName }</span>
+			                        <span class="date">${childComments.childCommentDate }</span>
+			                        <p class="reply-content">${childComments.childContent}</p>
+			                    </div>
+			                    <hr/>
+		                    </c:if>
+	                    </c:forEach>
+	                    
+	                    <!-- 답변 입력 창 (기본 숨김) -->
+	                    <c:if test="${not empty sessionScope.userId}">
+		                    <div class="reply-form" style="flex">
+		                    	<form action="${pageContext.request.contextPath}/writeChildComment" method="post" style="display: flex;">
+		                    		<input type="hidden" id="postIdx" name="postIdx" value="${boardDetail[0].postIdx}">
+		        					<input type="hidden" id="commentIdx" name="commentIdx" value="${comments.commentIdx}">
+		        					<input type="hidden" id="userIdx" name="userIdx" value="${userInfo.user_idx}">
+			                        <input type="text" id="childContent" name="childContent" value="" placeholder="답변을 입력하세요.">
+			                        <button type="submit" class="registration-btn" onclick="addReply(this)">등록</button>
+		                        </form>
+		                    </div>
+	                    </c:if>
+	                </div>
+	            </div>
+            </c:forEach>
+        </div>
+    </div>
+    <!-- 댓글 섹션 끝 -->
 	<!-- Modal -->
     <div id="deleteModal" class="modal">
         <div class="modal-content">

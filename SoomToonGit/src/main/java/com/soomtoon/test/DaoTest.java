@@ -3,6 +3,8 @@ package com.soomtoon.test;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.servlet.http.HttpSession;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,14 +39,12 @@ public class DaoTest {
 	@Test
 	// 게시글 상세페이지 조회 테스트
 	public void testBoardDetail(){
-		Scanner sc = new Scanner(System.in);
-		System.out.print("postIdx : ");
-		int input = sc.nextInt();
-		ArrayList<BoardDto> bDto = bdao.getBoardDetailSelect(input);
+		HttpSession session = null;
+		int input = 1;
+		ArrayList<BoardDto> bDto = bdao.getBoardDetailSelect(input, session);
 		try {
 			for(BoardDto dto : bDto) {
 				System.out.println(dto.getUserName());
-				sc.close();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -57,14 +57,11 @@ public class DaoTest {
 	@Test
 	// 웹툰 상세페이지 조회 테스트
 	public void testWebtoonDetail() {
-		Scanner sc = new Scanner(System.in);
-		System.out.print("webtoonIdx : ");
-		int input = sc.nextInt();
+		int input = 1;
 		ArrayList<WebtoonDto> wDto = wDao.getWebtoonDetailSelect(input);
 		try {
 			for(WebtoonDto dto : wDto) {
 				System.out.println(dto.getWebtoonName());
-				sc.close();
 			}
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -74,9 +71,7 @@ public class DaoTest {
 	@Test
 	// 웹툰 상세페이지 - 게시판 테스트
 	public void testWebtoonBoardList() {
-		Scanner sc = new Scanner(System.in);
-		System.out.println("webtoonIdx : ");
-		int input = sc.nextInt();
+		int input = 1;
 		
 		ArrayList<BoardDto> bDto = wDao.getWebtoobBoardListSelect(input);
 		try {

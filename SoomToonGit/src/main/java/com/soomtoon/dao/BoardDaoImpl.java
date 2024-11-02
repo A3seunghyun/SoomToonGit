@@ -4,12 +4,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.soomtoon.dto.BoardDto;
 import com.soomtoon.dto.BoardInsertDto;
+import com.soomtoon.dto.ChildCommentDto;
+import com.soomtoon.dto.ChildCommentInsertDto;
+import com.soomtoon.dto.CommentDetailDto;
+import com.soomtoon.dto.CommentDto;
 
 @Repository
 public class BoardDaoImpl implements BoardDao{
@@ -30,7 +36,15 @@ public class BoardDaoImpl implements BoardDao{
 	}
 
 	@Override
-	public ArrayList<BoardDto> getBoardDetailSelect(int postIdx) {
+	public ArrayList<BoardDto> getBoardDetailSelect(int postIdx, HttpSession session) {
+		String viewKey = "viewed_" + postIdx;
+		
+	    // 세션에 조회 기록이 없을 때만 조회수 증가
+	    if (session.getAttribute(viewKey) == null) {
+	        sqlSession.update("WebtoonMapper.BoardViewCount", postIdx);
+	        session.setAttribute(viewKey, true);
+	    }
+		
 		HashMap<String, Integer> hmap = new HashMap<String, Integer>();
 		hmap.put("postIdx", postIdx);
 		
@@ -62,6 +76,42 @@ public class BoardDaoImpl implements BoardDao{
 		hmap.put("postContent", postContent);
 		
 		sqlSession.update("WebtoonMapper.BoardEdit", hmap);
+	}
+
+	@Override
+	public void commentInsert(CommentDto dto) {
+		sqlSession.insert("WebtoonMapper.CommentInsert", dto);
+	}
+
+	@Override
+	public ArrayList<CommentDetailDto> getBoardCommentSelect(int postIdx) {
+		List<CommentDetailDto> list = sqlSession.selectList("WebtoonMapper.BoardComments", postIdx);
+		
+		// List --> ArrayList 변환
+		ArrayList<CommentDetailDto> commentsList = new ArrayList<CommentDetailDto>();
+		commentsList.addAll(list);
+		
+		System.out.println("게시글 댓글 리스트 조회");
+		
+		return commentsList;
+	}
+
+	@Override
+	public ArrayList<ChildCommentDto> getChildCommentSelect(int postIdx) {
+		List<ChildCommentDto> list = sqlSession.selectList("WebtoonMapper.ChildComments", postIdx);
+		
+		// List --> ArrayList 변환
+		ArrayList<ChildCommentDto> childCommentsList = new ArrayList<ChildCommentDto>();
+		childCommentsList.addAll(list);
+		
+		System.out.println("게시글 대댓글 리스트 조회");
+		
+		return childCommentsList;
+	}
+
+	@Override
+	public void childCommentInsert(ChildCommentInsertDto dto) {
+		sqlSession.insert("WebtoonMapper.ChildCommentInsert", dto);
 	}
 
 }

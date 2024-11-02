@@ -6,22 +6,68 @@
 	<!-- 전체 게시판 조회 -->
 	<select id="PostBoardListAll" resultType="com.soomtoon.dto.BoardDto">
 		<![CDATA[
-			select p.post_idx, w.webtoon_idx, w.toon_name, u.id, u.name, p.title, p.post_content, TO_CHAR(p.post_date, 'YYYY-MM-DD'), p.post_view
-			from post p , webtoon w , users u
-			where p.webtoon_idx = w.webtoon_idx
-			and p.user_idx = u.user_idx
-			order by p.post_idx DESC
+			SELECT 
+			    p.post_idx, 
+			    w.webtoon_idx, 
+			    w.toon_name, 
+			    u.id, 
+			    u.name, 
+			    p.title, 
+			    p.post_content, 
+			    TO_CHAR(p.post_date, 'YYYY-MM-DD') AS post_date, 
+			    p.post_view, 
+			    COALESCE(pc.comment_count, 0) AS comment_count,
+			    COALESCE(cc.child_comment_count, 0) AS child_comment_count
+			FROM 
+			    post p 
+			JOIN 
+			    webtoon w ON p.webtoon_idx = w.webtoon_idx
+			JOIN 
+			    users u ON p.user_idx = u.user_idx
+			LEFT JOIN 
+			    (SELECT c.post_idx, COUNT(c.comment_idx) AS comment_count 
+			     FROM comments c 
+			     GROUP BY c.post_idx) pc ON p.post_idx = pc.post_idx
+			LEFT JOIN 
+			    (SELECT cc.post_idx, COUNT(cc.child_comment_idx) AS child_comment_count 
+			     FROM child_comment cc 
+			     GROUP BY cc.post_idx) cc ON p.post_idx = cc.post_idx
 		]]>
 	</select>
 	
 	<!-- 특정 게시글 상세페이지 -->
 	<select id="PostBoardDetail" resultType="com.soomtoon.dto.BoardDto">
 		<![CDATA[
-			select p.post_idx, w.webtoon_idx, w.toon_name, u.id, u.name, p.title, p.post_content, TO_CHAR(p.post_date, 'YYYY-MM-DD'), p.post_view
-			from post p , webtoon w , users u
-			where p.webtoon_idx = w.webtoon_idx
-			and p.user_idx = u.user_idx
-			and p.post_idx = #{postIdx}
+			SELECT 
+			    p.post_idx, 
+			    w.webtoon_idx, 
+			    w.toon_name, 
+			    u.id, 
+			    u.name, 
+			    p.title, 
+			    p.post_content, 
+			    TO_CHAR(p.post_date, 'YYYY-MM-DD') AS post_date, 
+			    p.post_view, 
+			    COALESCE(pc.comment_count, 0) AS comment_count,
+			    COALESCE(cc.child_comment_count, 0) AS child_comment_count
+			FROM 
+			    post p 
+			JOIN 
+			    webtoon w ON p.webtoon_idx = w.webtoon_idx
+			JOIN 
+			    users u ON p.user_idx = u.user_idx
+			LEFT JOIN 
+			    (SELECT c.post_idx, COUNT(c.comment_idx) AS comment_count 
+			     FROM comments c 
+			     WHERE c.post_idx = #{postIdx} 
+			     GROUP BY c.post_idx) pc ON p.post_idx = pc.post_idx
+			LEFT JOIN 
+			    (SELECT cc.post_idx, COUNT(cc.child_comment_idx) AS child_comment_count 
+			     FROM child_comment cc 
+			     WHERE cc.post_idx = #{postIdx} 
+			     GROUP BY cc.post_idx) cc ON p.post_idx = cc.post_idx
+			WHERE 
+			    p.post_idx = #{postIdx}
 		]]>
 	</select>
 	
@@ -64,5 +110,41 @@
 		title = #{postTitle}, 
 		post_content = #{postContent} 
 		WHERE post_idx = #{postIdx}
+	</select>
+	
+	<select id="BoardViewCount">
+		UPDATE post
+		SET 
+		post_view = post_view + 1
+		WHERE post_idx = #{postIdx}
+	</select>
+	
+	<select id="CommentInsert">
+		INSERT INTO comments(comment_idx, post_idx, user_idx, content, comment_date) VALUES(seq_comments_idx.nextval, #{postIdx}, #{userIdx}, #{content}, sysdate)
+	</select>
+	
+	<select id="BoardComments" resultType="com.soomtoon.dto.CommentDetailDto">
+		<![CDATA[
+			SELECT c.comment_idx, c.post_idx, c.user_idx, u.name, c.content, TO_CHAR(c.comment_date, 'YYYY-MM-DD') 
+			FROM comments c, users u 
+			WHERE c.user_idx = u.user_idx 
+			AND post_idx = #{postIdx}
+			ORDER BY c.comment_date DESC
+		]]>
+	</select>
+	
+	<select id="ChildComments" resultType="com.soomtoon.dto.ChildCommentDto">
+		<![CDATA[
+			SELECT c.child_comment_idx, c.comment_idx, c.user_idx, u.name, c.child_content, TO_CHAR(c.child_comment_date, 'YYYY-MM-DD'), c.post_idx 
+			FROM child_comment c, users u 
+			WHERE c.user_idx = u.user_idx 
+			AND post_idx = #{postIdx} 
+			ORDER BY c.child_comment_date DESC
+		]]>
+	</select>
+	
+	<select id="ChildCommentInsert">
+		INSERT INTO child_comment(child_comment_idx, post_idx, comment_idx, user_idx, child_content, child_comment_date) 
+		VALUES(seq_c_comment_idx.nextval, #{postIdx}, #{commentIdx}, #{userIdx}, #{childContent}, sysdate)
 	</select>
 </mapper>

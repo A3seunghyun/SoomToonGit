@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.soomtoon.dto.BoardDto;
 import com.soomtoon.dto.BoardInsertDto;
+import com.soomtoon.dto.ChildCommentDto;
+import com.soomtoon.dto.ChildCommentInsertDto;
+import com.soomtoon.dto.CommentDetailDto;
+import com.soomtoon.dto.CommentDto;
 import com.soomtoon.dto.MemberDto;
 import com.soomtoon.dto.SoomtoonDto;
 import com.soomtoon.dto.WebtoonDto;
@@ -75,13 +79,24 @@ public class HomeController {
 		}
 		
 		System.out.println("게시글 상세페이지 이동 : postIdx => " + postIdx);
-		ArrayList<BoardDto> boardDetail = bSvc.boardDetail(postIdx);
+		
+		// 게시글 상세 정보
+		ArrayList<BoardDto> boardDetail = bSvc.boardDetail(postIdx, session);
+		
+		// 게시글 댓글
+		ArrayList<CommentDetailDto> boardComments = bSvc.getBoardCommentSelect(postIdx);
+		
+		
+		// 게시글 대댓글
+		ArrayList<ChildCommentDto> childComments = bSvc.getChildCommentSelect(postIdx);
 		
 		BoardDto bDto = boardDetail.get(0);
 		System.out.println("게시글작성 ID : " + bDto.getUserId());
 		
 		model.addAttribute("boardDetail", boardDetail);
 		model.addAttribute("userId", userId);
+		model.addAttribute("boardComments", boardComments);
+		model.addAttribute("childComments", childComments);
 		
 		return "board_detail";
 	}
@@ -129,6 +144,24 @@ public class HomeController {
 		System.out.println("삭제 테스트 게시글 IDX : " + postIdx);
 		bSvc.boardDelete(postIdx);
 		return "redirect:/freeBulletinBoard";
+	}
+	
+	// 댓글 쓰기
+	@RequestMapping(value= "/writeComment", method = RequestMethod.POST)
+	public String commentInsert(Model model, @ModelAttribute CommentDto dto) {
+		System.out.println("POST IDX : " + dto.getPostIdx());
+		int postIdx = dto.getPostIdx();
+		bSvc.commentInsert(dto);
+		return "redirect:/boardDetail?postIdx=" + postIdx;
+	}
+	
+	// 댓글 답변 쓰기
+	@RequestMapping(value= "/writeChildComment", method = RequestMethod.POST)
+	public String childCommentInsert(Model model, @ModelAttribute ChildCommentInsertDto dto) {
+		System.out.println("POST IDX : " + dto.getPostIdx());
+		int postIdx = dto.getPostIdx();
+		bSvc.childCommentInsert(dto);
+		return "redirect:/boardDetail?postIdx=" + postIdx;
 	}
 	
 	@RequestMapping("/error")

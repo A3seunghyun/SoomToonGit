@@ -10,9 +10,11 @@ public class BoardDto {
 	private String postContent;
 	private String postDate;
 	private int postView;
+	private int commentCount;
+	private int childCommentCount;
 	
 	public BoardDto(int postIdx, int webtoonIdx, String webtoonName, String userId, String userName, String title,
-			String postContent, String postDate, int postView) {
+			String postContent, String postDate, int postView, int commentCount, int childCommentCount) {
 		this.postIdx = postIdx;
 		this.webtoonIdx = webtoonIdx;
 		this.webtoonName = webtoonName;
@@ -22,6 +24,8 @@ public class BoardDto {
 		this.postContent = postContent;
 		this.postDate = postDate;
 		this.postView = postView;
+		this.commentCount = commentCount;
+		this.childCommentCount = childCommentCount;
 	}
 
 	public int getPostIdx() {
@@ -94,6 +98,22 @@ public class BoardDto {
 
 	public void setPostView(int postView) {
 		this.postView = postView;
+	}
+
+	public int getCommentCount() {
+		return commentCount;
+	}
+
+	public void setCommentCount(int commentCount) {
+		this.commentCount = commentCount;
+	}
+
+	public int getChildCommentCount() {
+		return childCommentCount;
+	}
+
+	public void setChildCommentCount(int childCommentCount) {
+		this.childCommentCount = childCommentCount;
 	}
 	
 }
