@@ -209,6 +209,7 @@ public class HomeController {
 		return "error_page";
 	}
 	
+	// 웹툰 평점
 	@RequestMapping(value="/webtoonRating", method = RequestMethod.POST)
 	public String webtoonRating(Model model, @RequestParam("rating") int rating) {
 		int webtoonIdx = 1;

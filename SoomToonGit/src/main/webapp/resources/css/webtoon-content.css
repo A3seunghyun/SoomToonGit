@@ -200,3 +200,12 @@ a {
 	transform: translateY(1px);
 	box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
 }
+
+.rating-avg {
+	align-items: center;
+	display: flex;
+	text-align: center;
+	font-size: 22px;
+	tab-size: 4;
+	margin-left: 15px;
+}
