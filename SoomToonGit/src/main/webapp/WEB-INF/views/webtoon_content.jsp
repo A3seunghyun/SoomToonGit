@@ -76,7 +76,7 @@
                     <td>${board.userName}</td>
                     <td>${board.postDate}</td>
                     <td style="text-align: center;">${board.postView}</td>
-                    <td>구현중</td>
+                    <td style="text-align: center;">${board.commentCount + board.childCommentCount }</td>
                 </tr>
                 </c:forEach>
             </tbody>

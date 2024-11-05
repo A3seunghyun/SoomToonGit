@@ -57,13 +57,45 @@ public class HomeController {
 		return "webtoon_content";
 	}
 	
-	// 자유게시판 - 승현
+//	// 자유게시판 - 승현
+//	@RequestMapping("/freeBulletinBoard")
+//	public String freebulletinboard(Model model) {
+//		System.out.println("자유게시판 이동");
+//		ArrayList<BoardDto> boardAllList = bSvc.boardAllList();
+//		
+//		model.addAttribute("boardAllList", boardAllList);
+//		return "free_bulletin_board";
+//	}
+	
+	// 자유게시판 검색 - 승현
 	@RequestMapping("/freeBulletinBoard")
-	public String freebulletinboard(Model model) {
-		System.out.println("자유게시판 이동");
-		ArrayList<BoardDto> boardAllList = bSvc.boardAllList();
+	public String freebulletinboardSerach(Model model, 
+										@RequestParam(value = "searchType", required = false) String searchType, 
+										@RequestParam(value = "searchTerm", required = false) String searchTerm) {
+		System.out.println("자유게시판 검색");
+		ArrayList<BoardDto> boardSearchList = new ArrayList<BoardDto>();
+		if (searchTerm == null || searchTerm.trim().isEmpty() || searchType == null || searchType.trim().isEmpty()) {
+			System.out.println("검색키워드 없음.");
+			boardSearchList = bSvc.boardAllList();
+		} else {
+			String title = null;
+			String userName = null;
+			String webtoonName = null;
+			if(searchType.equals("title")) {
+				title = searchTerm;
+				System.out.println("제목 : " + title);
+			} else if(searchType.equals("userName")) {
+				userName = searchTerm;
+				System.out.println("작성자 : " + userName);
+			} else {
+				webtoonName = searchTerm;
+				System.out.println("웹툰명 : " + webtoonName);
+			}
+			
+			boardSearchList = bSvc.boardSearchList(title, userName, webtoonName);
+		}
 		
-		model.addAttribute("boardAllList", boardAllList);
+		model.addAttribute("boardSearchList", boardSearchList);
 		return "free_bulletin_board";
 	}
 	
@@ -102,7 +134,10 @@ public class HomeController {
 	}
 	
 	@RequestMapping("/writePost")
-	public String writePost() {
+	public String writePost(HttpSession session) {
+		if(session.getAttribute("userId") == null) {
+			return "login";
+		}
 		return "write_post"; 
 	}
 	

@@ -13,6 +13,7 @@ import com.soomtoon.dto.CommentDto;
 
 public interface BoardDao {
 	ArrayList<BoardDto> getBoardAllSelect();
+	ArrayList<BoardDto> getBoardSearchSelect(String title, String userName, String webtoonName);
 	ArrayList<BoardDto> getBoardDetailSelect(int postIdx, HttpSession session);
 	void boardInsert(BoardInsertDto dto);
 	void boardDelete(int postIdx);

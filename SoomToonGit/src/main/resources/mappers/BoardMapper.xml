@@ -35,6 +35,44 @@
 		]]>
 	</select>
 	
+	<!-- 전체 게시판 검색 -->
+	<select id="PostBoardSearchList" resultType="com.soomtoon.dto.BoardDto">
+		<![CDATA[
+			SELECT 
+			    p.post_idx, 
+			    w.webtoon_idx, 
+			    w.toon_name, 
+			    u.id, 
+			    u.name, 
+			    p.title, 
+			    p.post_content, 
+			    TO_CHAR(p.post_date, 'YYYY-MM-DD') AS post_date, 
+			    p.post_view, 
+			    COALESCE(pc.comment_count, 0) AS comment_count,
+			    COALESCE(cc.child_comment_count, 0) AS child_comment_count
+			FROM 
+			    post p 
+			JOIN 
+			    webtoon w ON p.webtoon_idx = w.webtoon_idx
+			JOIN 
+			    users u ON p.user_idx = u.user_idx
+			LEFT JOIN 
+			    (SELECT c.post_idx, COUNT(c.comment_idx) AS comment_count 
+			     FROM comments c 
+			     GROUP BY c.post_idx) pc ON p.post_idx = pc.post_idx
+			LEFT JOIN 
+			    (SELECT cc.post_idx, COUNT(cc.child_comment_idx) AS child_comment_count 
+			     FROM child_comment cc 
+			     GROUP BY cc.post_idx) cc ON p.post_idx = cc.post_idx
+			WHERE 
+			    (#{title} IS NULL OR p.title LIKE '%' || #{title} || '%')
+   				AND (#{userName} IS NULL OR u.name LIKE '%' || #{userName} || '%')
+    			AND (#{webtoonName} IS NULL OR w.toon_name LIKE '%' || #{webtoonName} || '%')
+			ORDER BY 
+			    p.post_idx DESC
+		]]>
+	</select>
+	
 	<!-- 특정 게시글 상세페이지 -->
 	<select id="PostBoardDetail" resultType="com.soomtoon.dto.BoardDto">
 		<![CDATA[
@@ -83,12 +121,33 @@
 	<!-- 특정 웹툰 상세페이지 - 게시판 -->
 	<select id="WebtoonBoardList" resultType="com.soomtoon.dto.BoardDto">
 		<![CDATA[
-			select p.post_idx, w.webtoon_idx, w.toon_name, u.id, u.name, p.title, p.post_content, TO_CHAR(p.post_date, 'YYYY-MM-DD'), p.post_view
-				from post p , webtoon w , users u
-				where p.webtoon_idx = w.webtoon_idx
-				and p.user_idx = u.user_idx
-	            and w.webtoon_idx = #{webtoonIdx}
-				order by p.post_idx DESC
+			SELECT 
+			    p.post_idx, 
+			    w.webtoon_idx, 
+			    w.toon_name, 
+			    u.id, 
+			    u.name, 
+			    p.title, 
+			    p.post_content, 
+			    TO_CHAR(p.post_date, 'YYYY-MM-DD') AS post_date, 
+			    p.post_view, 
+			    COALESCE(pc.comment_count, 0) AS comment_count,
+			    COALESCE(cc.child_comment_count, 0) AS child_comment_count
+			FROM 
+			    post p 
+			JOIN 
+			    webtoon w ON p.webtoon_idx = w.webtoon_idx
+			JOIN 
+			    users u ON p.user_idx = u.user_idx
+			LEFT JOIN 
+			    (SELECT c.post_idx, COUNT(c.comment_idx) AS comment_count 
+			     FROM comments c 
+			     GROUP BY c.post_idx) pc ON p.post_idx = pc.post_idx
+			LEFT JOIN 
+			    (SELECT cc.post_idx, COUNT(cc.child_comment_idx) AS child_comment_count 
+			     FROM child_comment cc 
+			     GROUP BY cc.post_idx) cc ON p.post_idx = cc.post_idx
+            WHERE p.webtoon_idx = #{webtoonIdx}
 		]]>
 	</select>
 	

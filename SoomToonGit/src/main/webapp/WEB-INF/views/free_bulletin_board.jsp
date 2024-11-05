@@ -13,7 +13,7 @@
 	
 	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/free_bulletin_board.js" defer></script>
 	
-	<form action="freebulletinboard" method="get">
+	<form action="freeBulletinBoard" method="get">
 		<div class="main-container">
 		<h2>자유게시판</h2>
 		<hr>
@@ -21,13 +21,13 @@
 				<div class="search-option">
 					<label for="search-type" hidden>검색 유형</label>
 					<select class="form-control" id="search-type" name="searchType">
-						<option>제목</option>
-						<option>웹툰명</option>
-						<option>작성자</option>
+						<option value="title">제목</option>
+						<option value="webtoonName">웹툰명</option>
+						<option value="userName">작성자</option>
 					</select>
 				</div>
-	            <input type="text" placeholder="검색어..." id="search-box" name="searchTerm">
-	            <button type="submit" id="search-btn">🔍</button>
+				<input type="text" placeholder="검색어..." id="search-box" name="searchTerm">
+				<button type="submit" id="search-btn">🔍</button>
 	        </div>
 	        
 	        <div class="board-count">Total 2건 1 페이지</div>
@@ -47,7 +47,7 @@
 	                </tr>
 	            </thead>
 	            <tbody>
-	            	<c:forEach var="board" items="${boardAllList}">
+	            	<c:forEach var="board" items="${boardSearchList}">
 	                <tr>
 	                    <td><a href="${pageContext.request.contextPath}/webtoonContent?webtoonIdx=${board.webtoonIdx }">${board.webtoonName}</a></td>
 	                    <td><a href="${pageContext.request.contextPath}/boardDetail?postIdx=${board.postIdx }">${board.title }</a></td>

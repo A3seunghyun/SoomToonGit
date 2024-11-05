@@ -34,6 +34,21 @@ public class BoardDaoImpl implements BoardDao{
 		
 		return allList;
 	}
+	
+	@Override
+	public ArrayList<BoardDto> getBoardSearchSelect(String title, String userName, String webtoonName) {
+		HashMap<String, String> hmap = new HashMap<String, String>();
+		hmap.put("title", title);
+		hmap.put("userName", userName);
+		hmap.put("webtoonName", webtoonName);
+		
+		List<BoardDto> list = sqlSession.selectList("PostBoardSearchList", hmap);
+		
+		ArrayList<BoardDto> searchList = new ArrayList<BoardDto>();
+		searchList.addAll(list);
+		
+		return searchList;
+	}
 
 	@Override
 	public ArrayList<BoardDto> getBoardDetailSelect(int postIdx, HttpSession session) {

@@ -27,6 +27,11 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
+	public ArrayList<BoardDto> boardSearchList(String title, String userName, String webtoonName) {
+		return bDao.getBoardSearchSelect(title, userName, webtoonName);
+	}
+
+	@Override
 	public ArrayList<BoardDto> boardDetail(int postIdx, HttpSession session) {
 		return bDao.getBoardDetailSelect(postIdx, session);
 	}
@@ -65,6 +70,5 @@ public class BoardServiceImpl implements BoardService{
 	public void childCommentInsert(ChildCommentInsertDto dto) {
 		bDao.childCommentInsert(dto);
 	}
-
 
 }
