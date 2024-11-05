@@ -28,7 +28,7 @@ $(function(){
 	
 	$(".content-img").click(function(){
 		let idx = $(this).attr("data-toonIdx");
-		location.href="${pagecContext.request.contextPath}/webtoonContent?webtoonIdx=" + idx;
+		location.href = "${pageContext.request.contextPath}/webtoonContent?webtoonIdx=" + idx;
 	});
 		
 	$("#rank").click(function(){
@@ -139,7 +139,9 @@ $(document).ready(function() {
 </div>
 
 <!-- 챗봇 아이콘 -->
-<div id="chatbot-icon">soomChat</div>
+<c:if test="${not empty sessionScope.userId}">
+	<div id="chatbot-icon">soomChat</div>
+</c:if>
 
 <jsp:include page="footer.jsp"></jsp:include>
 <!-- <script type="text/javascript" src="resources/js/soomtoon_daily.js"></script> -->

@@ -295,7 +295,10 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value= "/main")
-	public String soomtoon_daily(String day_week, Model model) {
+	public String soomtoon_daily(String day_week, Model model, HttpSession session) {
+		String userId = (String) session.getAttribute("userId"); // 로그인한 사용자 IDX
+		System.out.println("유저ID : " + userId);
+		
 		if(day_week == null) {
 			day_week = "1";
 		}
