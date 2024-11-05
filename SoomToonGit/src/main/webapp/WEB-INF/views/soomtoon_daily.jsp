@@ -25,6 +25,11 @@ $(function(){
 		location.href="${pageContext.request.contextPath}/main?day_week=" + dayWeek;
 		
 	});	
+	
+	$(".content-img").click(function(){
+		let idx = $(this).attr("data-toonIdx");
+		location.href="${pagecContext.request.contextPath}/webtoonContent?webtoonIdx=" + idx;
+	});
 		
 	$("#rank").click(function(){
 		location.href="${pageContext.request.contextPath}/soomtoon_rank";
