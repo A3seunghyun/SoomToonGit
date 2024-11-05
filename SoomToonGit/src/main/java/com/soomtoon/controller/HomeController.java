@@ -209,6 +209,13 @@ public class HomeController {
 		return "error_page";
 	}
 	
+	@RequestMapping(value="/webtoonRating", method = RequestMethod.POST)
+	public String webtoonRating(Model model, @RequestParam("rating") int rating) {
+		int webtoonIdx = 1;
+		int webtoonRating = rating;
+		System.out.println("평점 : " + webtoonRating);
+		return "redirect:/webtoonContent?webtoonIdx=" + webtoonIdx;
+	}
 	
 	// 용준
 	@Autowired
