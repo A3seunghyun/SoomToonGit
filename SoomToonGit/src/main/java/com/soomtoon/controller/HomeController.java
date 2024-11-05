@@ -349,7 +349,7 @@ public class HomeController {
 		ms.memberInsert(dto);
 //			MemberDto dto2 = dto;
 //			System.out.println(dto2);
-		return "redirect:/";
+		return "redirect:/main";
 	}
 	
 	

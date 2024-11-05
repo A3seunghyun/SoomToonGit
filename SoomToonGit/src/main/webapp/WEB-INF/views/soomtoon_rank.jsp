@@ -14,6 +14,11 @@ $(function(){
 	$("#daily").click(function(){
 		location.href="${pageContext.request.contextPath}/main?day_week=" + 1;
 	});
+	
+	$(".content-img").click(function(){
+		let idx = $(this).attr("data-toonIdx");
+		location.href = "${pageContext.request.contextPath}/webtoonContent?webtoonIdx=" + idx;
+	});
 });
 
 </script>
@@ -51,15 +56,15 @@ $(function(){
 				<c:forEach var="dto" items="${list}">
 				<div class="content">
 					<img class="content-img" data-toonIdx="${dto.webToon_idx }" src="${dto.toon_img }"/>
-<!-- 					<div class="content-title-box"> -->
-<!-- 						<img class="content-title-img" src="https://dn-img-page.kakao.com/download/resource?kid=bdlC8x/hAFrO4XUyJ/3D1mutZDVXIOekDxKlVhUk&filename=th3"/> -->
-<!-- 					</div> -->
 				</div>
 				</c:forEach>
 			</div>
 		</div>
 	</div>
 </div>
+
+<!-- 챗봇 아이콘 -->
+<jsp:include page="chat_bot.jsp"></jsp:include>
 <jsp:include page="footer.jsp"></jsp:include>
 <script type="text/javascript" src="resources/js/soomtoon_rank.js"></script>
 </body>

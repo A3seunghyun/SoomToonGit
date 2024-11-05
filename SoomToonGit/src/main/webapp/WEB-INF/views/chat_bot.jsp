@@ -12,7 +12,7 @@
 <script>
 $(function(){
 	$("#chatbot-icon").click(function(){
-		alert("ss");
+		
 	// 닉네임 입력하기 위한 창, Guest는 기본값
 	let name = prompt("닉네임을 입력하세요:", "Guest");
 		if (name) {
