@@ -32,6 +32,8 @@
 			    (SELECT cc.post_idx, COUNT(cc.child_comment_idx) AS child_comment_count 
 			     FROM child_comment cc 
 			     GROUP BY cc.post_idx) cc ON p.post_idx = cc.post_idx
+   			ORDER BY 
+			    p.post_idx DESC
 		]]>
 	</select>
 	
