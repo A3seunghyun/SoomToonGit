@@ -23,6 +23,22 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
+	public MemberDto selectUserIdx(int user_idx) {
+		return dao.selectUserIdx(user_idx);
+	}
+
+	@Override
+	public void updateAlias(MemberDto dto) {
+		dao.updateAlias(dto);
+	}
+
+	@Override
+	public void acoountDelete(int user_idx) {
+		dao.acoountDelete(user_idx);
+	}
+	
+	
+	@Override
 	public boolean login(String id, String pw) {
 		boolean login =  dao.login(id, pw);
 		return login;

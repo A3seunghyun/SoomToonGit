@@ -13,64 +13,59 @@
 <script>
 $(function(){
 	$(".daily-text").click(function(){
-		let checked = $(this).text();
 		let dayWeek = $(this).data('day'); 
 		// 클릭한 요일의 day 값을 뽑음
 		
-		
-		// 모든 daily-subtab-check를 숨기고 daily-text를 보이게
-		$(".daily-subtab-check").hide();
 		$(".daily-text").show();
-
-		// 클릭한 요일에 해당하는 요소만 표시
-		$(this).hide(); // 클릭한 daily-text는 숨김
-		$(".daily-subtab-check[data-day='" + dayWeek + "']").show(); // 해당 요일을 체크 상태로
+		$(".daily-subtab-check").hide();
 		
-		location.href="${pageContext.request.contextPath}/?day_week=" + dayWeek;
+		$(this).hide();
+		$(".daily-subtab-check[data-day='" + dayWeek + "']").show();
 		
-// 		$(".daily-subtab-check").each(function(){
-// 			if($(this).text() === checked) {
-// 				$(this).show();
-// 			} else {
-// 				$(this).hide();
-// 			}
-// 		});
+		location.href="${pageContext.request.contextPath}/main?day_week=" + dayWeek;
 		
+	});	
 		
-		
-//		// ajax 요청으로 day_week값 전달
-// 		$.ajax({
-// 			type: 'GET',
-// 			url: '${pageContext.request.contextPath}/',
-// 			data: {day_week: dayWeek},
-// 			success: function(response) {
-// 				//웹툰 목록을 성공으로 받아왔을 떄 화면 갱신 처리
-				
-// 				let htmlContent = '';
-				
-// 				response.forEach(function(items){
-// 					htmlContent += `<div class="content">
-// 										<img class="content-img" src="${dto.toon_img }"/>
-// 									</div>`;
-// 				});
-// 			 $('.content-layout-inner').html(htmlContent); // 웹툰 목록 갱신
-// 				console.log("ajax 성공");
-// 			},
-// 			error: function(xhr, status, error){
-// 				console.log("ajax 에러 발생:", error);
-// 			}
-// 		});
-
-
-
-	});		
-	
 	$("#rank").click(function(){
-		console.log("클릭됨");
 		location.href="${pageContext.request.contextPath}/soomtoon_rank";
+	
 	});
+	
+	 $("#chatbot-icon").click(function(){
+		 // 닉네임 입력하기 위한 창, Guest는 기본값
+        let name = prompt("닉네임을 입력하세요:", "Guest");
+        if (name) {
+            let child = window.open('/soomtoon/chat.do', 'chat', 'width=405,height=510');
+            
+            child.addEventListener('load', function() {
+            	// 새 창이 완전히 로드된 후 이벤트 발생함
+            	
+                if (typeof child.connect === 'function') {
+               		// typeof 값의 타입을 확인할때 쓰는 연산자 connect가 함수인지, chat.do에 connect함수가 있는지ㅋ
+                    child.connect(name);
+                } else {
+                    console.error("connect 함수가 정의되지 않았습니다.");
+                }
+                
+                if(name.equals("")) {
+                	alert("닉네임을 입력하세요");
+                } 
+            });
+        }
+	 });
+	 
 }); /* $(function) 마지막 중괄호 */
 
+
+
+$(document).ready(function() {
+    // selectedDay 값에 따라 해당 요일을 표시
+    let selectedDay = "${day_week}";
+
+    // 선택된 요일에 해당하는 .daily-subtab-check를 표시하고, .daily-text는 숨김
+    $(".daily-text[data-day='" + selectedDay + "']").hide();
+    $(".daily-subtab-check[data-day='" + selectedDay + "']").show();
+});
 </script>
 <body>
 <jsp:include page="header.jsp"></jsp:include>
@@ -103,37 +98,32 @@ $(function(){
 		<div class="content-box">
 			<div class="daily-tab">
 				<div class="daily-subtab">
-					<div style="display: block" class="daily-subtab-check" data-day="1">월</div>
-					<span style="display: none" class="daily-text" data-day="1">월</span>
-					<div class="daily-subtab-check" data-day="2">화</div>
+					<div style="display: none" class="daily-subtab-check" data-day="1">월</div>
+					<span class="daily-text" data-day="1">월</span>
+					<div style="display: none"  class="daily-subtab-check" data-day="2">화</div>
 					<span class="daily-text" data-day="2">화</span>
-					<div class="daily-subtab-check" data-day="3">수</div>
+					<div style="display: none"  class="daily-subtab-check" data-day="3">수</div>
 					<span class="daily-text" data-day="3">수</span>
-					<div class="daily-subtab-check" data-day="4">목</div>
+					<div style="display: none"  class="daily-subtab-check" data-day="4">목</div>
 					<span class="daily-text" data-day="4">목</span>
-					<div class="daily-subtab-check" data-day="5">금</div>
+					<div style="display: none"  class="daily-subtab-check" data-day="5">금</div>
 					<span class="daily-text" data-day="5">금</span>
-					<div class="daily-subtab-check" data-day="6">토</div>
+					<div style="display: none"  class="daily-subtab-check" data-day="6">토</div>
 					<span class="daily-text" data-day="6">토</span>
-					<div class="daily-subtab-check" data-day="7">일</div>
+					<div style="display: none" class="daily-subtab-check" data-day="7">일</div>
 					<span class="daily-text" data-day="7">일</span>
 				</div>
 			</div>
-			<div class="daily-count">요일별 웹툰수 (10)</div>
+			<div class="daily-count">요일별 웹툰수 (${countToon})</div>
 			<div class="content-layout">
 				<div class="content-layout-inner">
 				<c:if test="${not empty list }">
 					<c:forEach var="dto" items="${list}">
 						<div class="content">
-<%-- 							<span class="toon-name" style="display:none">${dto.toon_name}</span> --%>
-	<!-- 						 이름 심어주고 글쓰기 할때 넘김 -->
-							<img class="content-img" src="${dto.toon_img }"/>
-<!-- 							<div class="content-title-box"> -->
-<!-- 								<img class="content-title-img" src="https://dn-img-page.kakao.com/download/resource?kid=bdlC8x/hAFrO4XUyJ/3D1mutZDVXIOekDxKlVhUk&filename=th3"/> -->
-<!-- 							</div> -->
+							<img class="content-img" data-toonIdx="${dto.webToon_idx }" src="${dto.toon_img }"/>
 						</div>
 					</c:forEach>
-				</c:if>	
+				</c:if>
 				<c:if test="${empty list }"	>
 					<p>해당 요일의 웹툰이 없습니다.</p>
 				</c:if>
@@ -142,6 +132,10 @@ $(function(){
 		</div>
 	</div>
 </div>
+
+<!-- 챗봇 아이콘 -->
+<div id="chatbot-icon">soomChat</div>
+
 <jsp:include page="footer.jsp"></jsp:include>
 <!-- <script type="text/javascript" src="resources/js/soomtoon_daily.js"></script> -->
 </body>

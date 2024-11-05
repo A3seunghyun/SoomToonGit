@@ -20,13 +20,33 @@ public class MemberDaoImpl implements MemberDao{
 	}
 	
 	// 회원중복 체크
-	 @Override
+	@Override
     public int selectId(String id) {
         int count = session.selectOne("Member.selectId", id); // 1이면 아이디중복
         //System.out.println("selectId 결과: " + count); // 쿼리 결과 디버깅 출력
         return count;
 	}
 	 
+	
+	@Override
+	public MemberDto selectUserIdx(int user_idx) {
+		return session.selectOne("Member.userBno", user_idx);
+	}
+	
+	// 닉네임 변경
+	@Override
+	public void updateAlias(MemberDto dto) {
+		session.update("Member.updateAlias", dto);
+
+	}
+	
+	// 계정 삭제
+	@Override
+	public void acoountDelete(int user_idx) {
+		session.update("Member.deleteUser", user_idx);
+	}
+ 
+
 	// 로그인 - 승현
 	@Override
 	public boolean login(String id, String pw) {

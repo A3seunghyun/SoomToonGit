@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,11 +10,12 @@
 </head>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-window.addEventListener('DOMContentLoaded', function () {
-	  document.getElementById("daily").addEventListener("click", function(){
-	    location.href = "${pageContext.request.contextPath}/";  // 이동할 경로를 설정
-	  });
+$(function(){
+	$("#daily").click(function(){
+		location.href="${pageContext.request.contextPath}/main?day_week=" + 1;
 	});
+});
+
 </script>
 <body>
 <jsp:include page="header.jsp"></jsp:include>
@@ -43,45 +45,17 @@ window.addEventListener('DOMContentLoaded', function () {
 				</ul>
 			</div>
 		</div>
-		<div class="soomtoon-count"> 전체웹툰수 (10)</div>
+		<div class="soomtoon-count"> 전체웹툰수 (${countToonAll})</div>
 		<div class="content-layout">
 			<div class="content-layout-inner">
+				<c:forEach var="dto" items="${list}">
 				<div class="content">
-					<img class="content-img" src="https://dn-img-page.kakao.com/download/resource?kid=ce6uuq/hAFPLGEMcw/YYiwupIsDFxr6fdMXrxPtK&filename=th3"/>
-					<div class="content-title-box">
-						<img class="content-title-img" src="https://dn-img-page.kakao.com/download/resource?kid=bdlC8x/hAFrO4XUyJ/3D1mutZDVXIOekDxKlVhUk&filename=th3"/>
-					</div>
+					<img class="content-img" data-toonIdx="${dto.webToon_idx }" src="${dto.toon_img }"/>
+<!-- 					<div class="content-title-box"> -->
+<!-- 						<img class="content-title-img" src="https://dn-img-page.kakao.com/download/resource?kid=bdlC8x/hAFrO4XUyJ/3D1mutZDVXIOekDxKlVhUk&filename=th3"/> -->
+<!-- 					</div> -->
 				</div>
-				<div class="content">
-					<img class="content-img" src="https://dn-img-page.kakao.com/download/resource?kid=lTa2m/hAC1SVDnhO/ida7wlLNIWrVLNrYa2ugeK&filename=th3"/>
-					<div class="content-title-box">
-						<img class="content-title-img" src="https://dn-img-page.kakao.com/download/resource?kid=QduFp/hzN2jQlN7G/jskbiPqVnwISro4B2wHwKK&filename=th3"/>
-					</div>
-				</div>
-				<div class="content">
-					<img class="content-img" src="https://dn-img-page.kakao.com/download/resource?kid=lTa2m/hAC1SVDnhO/ida7wlLNIWrVLNrYa2ugeK&filename=th3"/>
-					<div class="content-title-box">
-						<img class="content-title-img" src="https://dn-img-page.kakao.com/download/resource?kid=QduFp/hzN2jQlN7G/jskbiPqVnwISro4B2wHwKK&filename=th3"/>
-					</div>
-				</div>
-				<div class="content">
-					<img class="content-img" src="https://dn-img-page.kakao.com/download/resource?kid=lTa2m/hAC1SVDnhO/ida7wlLNIWrVLNrYa2ugeK&filename=th3"/>
-					<div class="content-title-box">
-						<img class="content-title-img" src="https://dn-img-page.kakao.com/download/resource?kid=QduFp/hzN2jQlN7G/jskbiPqVnwISro4B2wHwKK&filename=th3"/>
-					</div>
-				</div>
-				<div class="content">
-					<img class="content-img" src="https://dn-img-page.kakao.com/download/resource?kid=lTa2m/hAC1SVDnhO/ida7wlLNIWrVLNrYa2ugeK&filename=th3"/>
-					<div class="content-title-box">
-						<img class="content-title-img" src="https://dn-img-page.kakao.com/download/resource?kid=QduFp/hzN2jQlN7G/jskbiPqVnwISro4B2wHwKK&filename=th3"/>
-					</div>
-				</div>
-				<div class="content">
-					<img class="content-img" src="https://dn-img-page.kakao.com/download/resource?kid=lTa2m/hAC1SVDnhO/ida7wlLNIWrVLNrYa2ugeK&filename=th3"/>
-					<div class="content-title-box">
-						<img class="content-title-img" src="https://dn-img-page.kakao.com/download/resource?kid=QduFp/hzN2jQlN7G/jskbiPqVnwISro4B2wHwKK&filename=th3"/>
-					</div>
-				</div>
+				</c:forEach>
 			</div>
 		</div>
 	</div>

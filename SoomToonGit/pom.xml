@@ -151,8 +151,6 @@
 		    <version>11.2.0.4</version>
 		</dependency>
 		
-		
-		
 		<!-- ajax이용에 필요한 dependency --> 
 		<dependency>
 		    <groupId>com.fasterxml.jackson.core</groupId>
@@ -160,6 +158,18 @@
 		    <version>2.17.0</version>
 		</dependency>
 		
+		<!-- gson 구글에서 만든 json 파싱 라이브러리 (채팅하기위함) -->
+ 		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.10.1</version>
+		</dependency>
+				
+		<dependency>
+		    <groupId>javax.websocket</groupId>
+		    <artifactId>javax.websocket-api</artifactId>
+		    <version>1.1</version>
+		</dependency>
 		
 	</dependencies>
     <build>

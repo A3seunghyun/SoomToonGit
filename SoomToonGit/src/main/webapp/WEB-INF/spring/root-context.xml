@@ -26,6 +26,7 @@
 		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
 	</bean>
 	
+	<context:component-scan base-package="com.soomtoon.service"></context:component-scan>
 	<context:component-scan base-package="com.soomtoon.dao"/>
-	
+<!-- 여기까지 설정 -->		
 </beans>

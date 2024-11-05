@@ -20,18 +20,22 @@
 				$(".withdrawal").css('background-color','rgb(255, 188, 0)');
 				$(".withdrawal").css('color','black');
 				$(".withdrawal").css('cursor', 'pointer');
+				$(".withdrawal").prop("disabled", false);
 			} else {
 				$("#check-after").hide();
 				$("#check-before").show();
 				$(".withdrawal").css('background-color','rgb(238,238,238)');
 				$(".withdrawal").css('color','rgb(224,224,224)');
+				$(".withdrawal").prop("disabled", true);
 			}
 		});
 		
 		$(".withdrawal").click(function(){
 			if($(".check-box-inner input[type='checkbox']").is(':checked')){
-				alert("AAA");
-			}
+				if(confirm("정말로 탈퇴하시겠습니까?")){
+					$("#deleteForm").submit();
+				}
+			} 
 		});
 		
 	});  // function() 마지막 중괄호
@@ -85,21 +89,24 @@
 					</span>
 				</div>
 			</div>
-			<div class="check-box">
-				<label class="check-box-inner">
-					<div class="check-box-check">
-						<input type="checkbox" class="check-box-check-ab" />
-						<img id="check-before" src="data:image/svg+xml,%3csvg width='18' height='18' viewBox='0 0 18 18' fill='none' xmlns='http://www.w3.org/2000/svg'%3e %3cpath d='M18 9C18 13.9706 13.9706 18 9 18C4.02944 18 0 13.9706 0 9C0 4.02944 4.02944 0 9 0C13.9706 0 18 4.02944 18 9Z' fill='%23EEEEEE'/%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M14.1364 6.6364L8 12.7728L3.8636 8.6364L5.1364 7.3636L8 10.2272L12.8636 5.3636L14.1364 6.6364Z' fill='%237A7A7A'/%3e %3c/svg%3e"/>
-						<img style="display: none" id="check-after" src="data:image/svg+xml,%3csvg width='18' height='18' viewBox='0 0 18 18' fill='none' xmlns='http://www.w3.org/2000/svg'%3e %3cg clip-path='url(%23clip0_5192_46937)'%3e %3cpath d='M18 9C18 13.9706 13.9706 18 9 18C4.02944 18 0 13.9706 0 9C0 4.02944 4.02944 0 9 0C13.9706 0 18 4.02944 18 9Z' fill='%23FFBC00'/%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M14.1364 6.6364L8 12.7728L3.8636 8.6364L5.1364 7.3636L8 10.2272L12.8636 5.3636L14.1364 6.6364Z' fill='%23222222'/%3e %3c/g%3e %3cdefs%3e %3cclipPath id='clip0_5192_46937'%3e %3crect width='18' height='18' fill='white'/%3e %3c/clipPath%3e %3c/defs%3e %3c/svg%3e"/>
-					</div>
-					<span class="check-text">
-						안내 사항을 모두 확인했으며, 탈퇴 시 회원 정보는 모두 삭제되고 데이터 복구가 불가함에 동의합니다.
-					</span>
-				</label>
-			</div>
-			<button class="withdrawal" disabled>
-				카카오페이지 탈퇴
-			</button>
+			<form id="deleteForm" action="${pageContext.request.contextPath}/account_delete" method="post">
+				<input type="hidden" name="user_idx" value="${user_idx}" />
+				<div class="check-box">
+					<label class="check-box-inner">
+						<div class="check-box-check">
+							<input type="checkbox" class="check-box-check-ab" />
+							<img id="check-before" src="data:image/svg+xml,%3csvg width='18' height='18' viewBox='0 0 18 18' fill='none' xmlns='http://www.w3.org/2000/svg'%3e %3cpath d='M18 9C18 13.9706 13.9706 18 9 18C4.02944 18 0 13.9706 0 9C0 4.02944 4.02944 0 9 0C13.9706 0 18 4.02944 18 9Z' fill='%23EEEEEE'/%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M14.1364 6.6364L8 12.7728L3.8636 8.6364L5.1364 7.3636L8 10.2272L12.8636 5.3636L14.1364 6.6364Z' fill='%237A7A7A'/%3e %3c/svg%3e"/>
+							<img style="display: none" id="check-after" src="data:image/svg+xml,%3csvg width='18' height='18' viewBox='0 0 18 18' fill='none' xmlns='http://www.w3.org/2000/svg'%3e %3cg clip-path='url(%23clip0_5192_46937)'%3e %3cpath d='M18 9C18 13.9706 13.9706 18 9 18C4.02944 18 0 13.9706 0 9C0 4.02944 4.02944 0 9 0C13.9706 0 18 4.02944 18 9Z' fill='%23FFBC00'/%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M14.1364 6.6364L8 12.7728L3.8636 8.6364L5.1364 7.3636L8 10.2272L12.8636 5.3636L14.1364 6.6364Z' fill='%23222222'/%3e %3c/g%3e %3cdefs%3e %3cclipPath id='clip0_5192_46937'%3e %3crect width='18' height='18' fill='white'/%3e %3c/clipPath%3e %3c/defs%3e %3c/svg%3e"/>
+						</div>
+						<span class="check-text">
+							안내 사항을 모두 확인했으며, 탈퇴 시 회원 정보는 모두 삭제되고 데이터 복구가 불가함에 동의합니다.
+						</span>
+					</label>
+				</div>
+				<button class="withdrawal" disabled>
+					카카오페이지 탈퇴
+				</button>
+			</form>
 		</div>
 	</div>
 </div>

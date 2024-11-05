@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +35,9 @@ public class HomeController {
 	
 	@Autowired
 	WebtoonService wSvc;
+	
+	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+
 	
 	// 특정 웹툰 페이지 - 승현
 	@RequestMapping(value= "/webtoonContent", method = RequestMethod.GET)
@@ -214,19 +219,46 @@ public class HomeController {
 	
 	// 계정정보
 	@RequestMapping(value= "/account_infor")
-	public String account_infor(Model model) {
+	public String account_infor(HttpSession session, Model model) {
+		
+//			로그인 합친 이후 주석풀어
+//			Integer user_idx = (Integer)session.getAttribute("user_idx");
+//			if(user_idx == null) {
+//				return "redirect:/soomtoon/login";
+//			}
+		
+//			지금은 예시 user_idx 
+		Integer user_idx = 2; 
+		MemberDto dto = ms.selectUserIdx(user_idx);
+		
+		model.addAttribute("user_idx", user_idx);
+		model.addAttribute("dto", dto);
+		
 		System.out.println("계정정보 페이지 들어옴");
 		
 		return "account_infor";
 	}
 	
-	// 프로필 수정
-	@RequestMapping("/profile_update")
-	public String profile_update(Model model) {
+	// 계정 삭제
+	@RequestMapping(value = "/account_delete", method = RequestMethod.POST)
+	public String account_delete(@RequestParam(value = "user_idx", required = false) Integer user_idx, Model model, HttpSession session) {
 		
-		System.out.println("프로필 수정 들어옴");
-		return "profile_update";
+		user_idx = 2;  // 로그인 기능 이후 수정 해야함
+		if(user_idx == null) {
+			System.out.println("회원탈퇴 에러 user_idx가 null임 !!");
+			return "redirect:/account_infor";
+		} 
+		
+		System.out.println("계정 삭제됨 user_idx : " + user_idx);
+		ms.acoountDelete(user_idx);
+		
+//			로그인 기능 완성 후
+//			session.invalidate();
+		
+//			로그인페이지로 이동하는거로 바꾸기 
+		return "redirect:/";
 	}
+	
 	
 	// 서비스 탈퇴
 	@RequestMapping("/service_withdrawal")
@@ -236,7 +268,32 @@ public class HomeController {
 		return "service_withdrawal";
 	}
 	
-	// 요일 웹툰
+	
+	// 프로필 수정 form
+	@RequestMapping("/profile_updateForm")
+	public String profile_updateForm(Integer user_idx, Model model) {
+		if(user_idx == null) {
+			logger.info("user_idx가 null 에러!");
+			return "account_infor";
+		}
+		MemberDto dto = ms.selectUserIdx(user_idx);
+		model.addAttribute("dto", dto);
+		
+		return "profile_update";
+	}
+	
+	// 프로필 수정
+	@RequestMapping("/profile_update")
+	public String profile_update(MemberDto dto, Model model) {
+		System.out.println("user_idx: " + dto.getUser_idx());
+		System.out.println("alias: " + dto.getAlias());
+		
+		ms.updateAlias(dto);
+		
+		System.out.println("프로필 수정 들어옴");
+		return "redirect:/account_infor";
+	}
+	
 	@RequestMapping(value= "/main")
 	public String soomtoon_daily(String day_week, Model model) {
 		if(day_week == null) {
@@ -249,13 +306,20 @@ public class HomeController {
 		model.addAttribute("day_week", day_week);
 		model.addAttribute("list",list);
 		
+		int countToon = ss.getCountToon(day_week);
+		model.addAttribute("countToon", countToon);
 		return "soomtoon_daily";
 	}
 	
-	// 실시간 웹툰 
+	// 실시간 웹툰 랭킹
 	@RequestMapping(value= "/soomtoon_rank")
 	public String soomtoon_rank(Model model) {
 		
+		ArrayList<SoomtoonDto> list = ss.getSoomtoonListAll();
+		model.addAttribute("list", list);
+		
+		int countToonAll = ss.counToonAll();
+		model.addAttribute("countToonAll", countToonAll);
 		return "soomtoon_rank";
 	}
 	
@@ -273,10 +337,17 @@ public class HomeController {
 		System.out.println("회원가입 정보 들어옴");
 
 		ms.memberInsert(dto);
-//		MemberDto dto2 = dto;
-//		System.out.println(dto2);
-		return "login";
+//			MemberDto dto2 = dto;
+//			System.out.println(dto2);
+		return "redirect:/";
 	}
+	
+	
+	
+	
+	
+	
+	
 	
 	// 로그인 페이지 - 승현
 	@RequestMapping("/login")
