@@ -32,6 +32,18 @@
 		WHERE user_idx = ${user_idx}
 	</update>
 	
+	<delete id="postDelete">
+		DELETE
+		FROM post
+		WHERE user_idx = #{user_idx}
+	</delete>
+	
+	<!-- 회원 탈퇴시 회원의 찜 목록 삭제 -->
+	<delete id="zzimDelete">
+		DELETE
+		FROM webtoon_zzim
+		WHERE user_idx = #{user_idx}
+	</delete>
 	
 	<!-- 승현 로그인 -->
 	<select id="login" resultType="int">
@@ -44,12 +56,19 @@
 	</select>
 	
 	<!-- 승현 유저정보 -->
-	<select id="userInfo" resultType="com.soomtoon.dto.MemberDto">
+	<select id="userInfo" resultType="com.soomtoon.dto.MemberDto" parameterType="com.soomtoon.dto.MemberDto">  <!-- parameterType 수정 복호화 -->
+<!-- 		<![CDATA[ -->
+<!-- 			SELECT *  -->
+<!-- 			FROM users  -->
+<!-- 			WHERE id=#{id}  -->
+<!-- 			AND pw=#{pw} -->
+<!-- 		]]> -->
+
 		<![CDATA[
 			SELECT * 
 			FROM users 
 			WHERE id=#{id} 
-			AND pw=#{pw}
+			AND status = 'Y'
 		]]>
 	</select>
 </mapper>

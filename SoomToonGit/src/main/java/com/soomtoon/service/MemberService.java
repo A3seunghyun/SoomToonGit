@@ -15,5 +15,9 @@ public interface MemberService {
 	
 	public boolean login(String id, String pw); // 로그인
 	
-	MemberDto userInfo(String id, String pw); // 유저 정보
+//	MemberDto userInfo(String id, String pw); // 유저 정보
+	
+	MemberDto userInfo(String id); // 유저 정보  복호화 위함
+	
+	public void postDelete(int user_idx);		// 계정삭제시 작성된 포스트,댓글 삭제 (댓글은 오라클 종속삭제)
 }

@@ -20,8 +20,15 @@ public interface MemberDao {
 	public void acoountDelete(int user_idx);
 	
 	// 로그인 처리
-	public boolean login(String id, String pw);
+	public boolean login(String id, String pw); 
 	
 	// 유저 정보
-	MemberDto userInfo(String id, String pw);
+//	MemberDto userInfo(String id, String pw);
+	
+	// 유저 정보 복호화 위함
+	MemberDto userInfo(String id);
+	
+	// 계정삭제시 작성된 포스트,댓글 삭제 (댓글은 오라클 종속삭제)
+	public void postDelete(int user_idx);
+	
 }

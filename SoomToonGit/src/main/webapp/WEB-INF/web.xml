@@ -6,7 +6,11 @@
 	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/spring/root-context.xml</param-value>
+		<param-value>/WEB-INF/spring/root-context.xml
+<!-- =========암호화 하기위함 -->
+			classpath:spring-security.xml
+<!-- =========암호화 하기위함 -->
+		</param-value>
 	</context-param>
 	
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
@@ -30,24 +34,28 @@
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 
-	
-	<!-- 	post방식 한글깨짐 방지 -->
+
+
+<!-- 	스프링 post방식 한글깨짐 방지 -->
+<!-- 한글 관련 UTF-8 설정 -->
 	<filter>
-	    <filter-name>encodingFilter</filter-name>
-	    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-	    <init-param>
-	        <param-name>encoding</param-name>
-	        <param-value>UTF-8</param-value>
-	    </init-param>
-	    <init-param>
-	        <param-name>forceEncoding</param-name>
-	        <param-value>true</param-value>
-	    </init-param>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>
+			org.springframework.web.filter.CharacterEncodingFilter
+		</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
 	</filter>
-	
 	<filter-mapping>
-	    <filter-name>encodingFilter</filter-name>
-	    <url-pattern>/*</url-pattern>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
+
+
 </web-app>

@@ -11,12 +11,14 @@
 <script>
 	$(function(){
 		$("#nickname").click(function(){
+			let user_idx = "${userInfo.user_idx }";
 			// 프로필 수정 창으로 이동
-			location.href = "${PageContext.request.contextPath}/soomtoon/profile_updateForm?user_idx=" + ${user_idx};
+			location.href = "${pageContext.request.contextPath}/profile_updateForm?user_idx=" + user_idx;
 		});
 		$("#widthdrawal").click(function(){
+			let user_idx = "${userInfo.user_idx}";
 			//서비스 탈퇴창으로 이동
-			location.href = "${PageContext.request.contextPath}/soomtoon/service_withdrawal?user_idx=" + ${user_idx};
+			location.href = "${pageContext.request.contextPath}/service_withdrawal?user_idx=" + user_idx;
 		});
 		
 	});
@@ -31,8 +33,9 @@
 		<div class="alias-layout">
 			<div class="alias-box">
 				<div class="alias-innerBox" id="nickname">
+					<input type="hidden" value="${userInfo.user_idx }"/>
 					<span class="alias">닉네임</span> 
-					<span class="name">${dto.alias}</span>
+					<span class="name">${userInfo.alias }</span>
 				</div>
 				<img width="24" height="24" src="data:image/svg+xml,%3csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M8.5 16.9466L13.5343 12L8.5 7.05338L9.39371 6L15.5 12L9.39371 18L8.5 16.9466Z' fill='%23222222'/%3e %3c/svg%3e"/>
 			</div>
@@ -42,7 +45,7 @@
 			<div class="alias-box">
 				<div class="alias-innerBox">
 					<span class="alias">주민 앞자리</span> 
-					<span class="name">${dto.jumin1}</span>
+					<span class="name">${userInfo.jumin1}</span>
 				</div>
 			</div>
 			<div class="under-line"></div>

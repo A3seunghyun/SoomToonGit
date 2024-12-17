@@ -1,12 +1,15 @@
 package com.soomtoon.controller;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -35,6 +38,9 @@ public class HomeController {
 	
 	@Autowired
 	WebtoonService wSvc;
+	
+	@Autowired
+	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
@@ -209,7 +215,6 @@ public class HomeController {
 		return "error_page";
 	}
 	
-	// 웹툰 평점
 	@RequestMapping(value="/webtoonRating", method = RequestMethod.POST)
 	public String webtoonRating(Model model, @RequestParam("rating") int rating) {
 		int webtoonIdx = 1;
@@ -217,6 +222,7 @@ public class HomeController {
 		System.out.println("평점 : " + webtoonRating);
 		return "redirect:/webtoonContent?webtoonIdx=" + webtoonIdx;
 	}
+	
 	
 	// 용준
 	@Autowired
@@ -228,49 +234,49 @@ public class HomeController {
 	// 계정정보
 	@RequestMapping(value= "/account_infor")
 	public String account_infor(HttpSession session, Model model) {
+		 // 세션에서 userInfo 객체를 가져옴
+	    MemberDto userInfo = (MemberDto) session.getAttribute("userInfo");
+	    
+		if(userInfo == null) {
+			System.out.println("세션에 저장된 userInfo가 없음 로그인페이지로");
+			return "redirect:/login";
+		}
 		
-//			로그인 합친 이후 주석풀어
-//			Integer user_idx = (Integer)session.getAttribute("user_idx");
-//			if(user_idx == null) {
-//				return "redirect:/soomtoon/login";
-//			}
+		// userInfo 객체에 user_idx와 정보를 모덱에 추가
+		model.addAttribute("userInfo", userInfo);
 		
-//			지금은 예시 user_idx 
-		Integer user_idx = 2; 
-		MemberDto dto = ms.selectUserIdx(user_idx);
-		
-		model.addAttribute("user_idx", user_idx);
-		model.addAttribute("dto", dto);
-		
-		System.out.println("계정정보 페이지 들어옴");
-		
+	    System.out.println("계정정보 페이지 들어옴. user_idx: " + userInfo.getUser_idx());
+	    
 		return "account_infor";
 	}
 	
 	// 계정 삭제
 	@RequestMapping(value = "/account_delete", method = RequestMethod.POST)
-	public String account_delete(@RequestParam(value = "user_idx", required = false) Integer user_idx, Model model, HttpSession session) {
+	public String account_delete(@RequestParam(value = "user_idx", required = false) Integer user_idx, 
+								Model model, HttpSession session) {
 		
-		user_idx = 2;  // 로그인 기능 이후 수정 해야함
-		if(user_idx == null) {
-			System.out.println("회원탈퇴 에러 user_idx가 null임 !!");
-			return "redirect:/account_infor";
-		} 
+		 // 세션에서 userInfo 객체를 가져옴
+	    MemberDto userInfo = (MemberDto) session.getAttribute("userInfo");
+	    
+		if(userInfo == null) {
+			System.out.println("세션에 저장된 userInfo가 없음 로그인페이지로");
+			return "redirect:/login";
+		}
 		
 		System.out.println("계정 삭제됨 user_idx : " + user_idx);
-		ms.acoountDelete(user_idx);
+		ms.acoountDelete(userInfo.getUser_idx());
+		ms.postDelete(userInfo.getUser_idx());
 		
-//			로그인 기능 완성 후
-//			session.invalidate();
+		session.invalidate();
 		
-//			로그인페이지로 이동하는거로 바꾸기 
-		return "redirect:/";
+		return "redirect:/main";
 	}
 	
 	
-	// 서비스 탈퇴
+	// 서비스 탈퇴페이지
 	@RequestMapping("/service_withdrawal")
-	public String service_withdrawal(Model model) {
+	public String service_withdrawal(@RequestParam(value = "user_idx", required = false) Integer user_idx, 
+									Model model, HttpSession session) {
 		
 		
 		return "service_withdrawal";
@@ -279,29 +285,42 @@ public class HomeController {
 	
 	// 프로필 수정 form
 	@RequestMapping("/profile_updateForm")
-	public String profile_updateForm(Integer user_idx, Model model) {
-		if(user_idx == null) {
-			logger.info("user_idx가 null 에러!");
-			return "account_infor";
-		}
-		MemberDto dto = ms.selectUserIdx(user_idx);
-		model.addAttribute("dto", dto);
-		
-		return "profile_update";
+	public String profile_updateForm(@RequestParam(value = "user_idx", required = false) Integer user_idx, Model model, HttpSession session) {
+		 // 세션에서 dto 객체를 가져옴
+	    MemberDto userInfo = (MemberDto) session.getAttribute("userInfo");
+	    
+	    // dto가 세션에 없을 경우 로그인 페이지로 리다이렉트
+	    if (userInfo == null) {
+	        System.out.println("세션에 저장된 dto가 null입니다. 로그인 페이지로 이동합니다.");
+	        return "redirect:/login";
+	    }
+
+	    // 모델에 dto 추가
+	    model.addAttribute("userInfo", userInfo);
+	    
+	    return "profile_update";
 	}
 	
 	// 프로필 수정
 	@RequestMapping("/profile_update")
-	public String profile_update(MemberDto dto, Model model) {
-		System.out.println("user_idx: " + dto.getUser_idx());
-		System.out.println("alias: " + dto.getAlias());
+	public String profile_update( @RequestParam("alias") String alias, HttpSession session) {
 		
-		ms.updateAlias(dto);
-		
-		System.out.println("프로필 수정 들어옴");
+		// 세션에서 dto 객체를 가져옴
+	    MemberDto userInfo = (MemberDto) session.getAttribute("userInfo");
+	    
+		if(userInfo == null) {
+			System.out.println("세션에 저장된 userInfo가 없음 로그인페이지로");
+			return "redirect:/login";
+		}
+	    
+	    userInfo.setAlias(alias);
+	    ms.updateAlias(userInfo);
+	    
+	    System.out.println("프로필 수정 완료. user_idx: " + userInfo.getUser_idx() + ", alias: " + alias);
 		return "redirect:/account_infor";
 	}
 	
+	// 메인페이지 (요일 웹툰)
 	@RequestMapping(value= "/main")
 	public String soomtoon_daily(String day_week, Model model, HttpSession session) {
 		String userId = (String) session.getAttribute("userId"); // 로그인한 사용자 IDX
@@ -319,19 +338,51 @@ public class HomeController {
 		
 		int countToon = ss.getCountToon(day_week);
 		model.addAttribute("countToon", countToon);
+		
+		Map<Integer, Boolean> favoriteWebtoons = ss.getFavoriteWebtoons(userId);
+		model.addAttribute("favoriteWebtoons", favoriteWebtoons);
+		
+		
+		ArrayList<SoomtoonDto> dto = ss.getSoomtoonListAll();
+		model.addAttribute("dto", dto);
 		return "soomtoon_daily";
 	}
 	
 	// 실시간 웹툰 랭킹
 	@RequestMapping(value= "/soomtoon_rank")
-	public String soomtoon_rank(Model model) {
+	public String soomtoon_rank(Model model, HttpSession session) {
+		String userId = (String) session.getAttribute("userId");
 		
+		// 웹툰 목록 불러오기
 		ArrayList<SoomtoonDto> list = ss.getSoomtoonListAll();
 		model.addAttribute("list", list);
 		
+		// 웹툰의 총 수
 		int countToonAll = ss.counToonAll();
 		model.addAttribute("countToonAll", countToonAll);
+		
+		// 찜한 웹툰 목록ㄴ
+		Map<Integer, Boolean> favoriteWebtoons = ss.getFavoriteWebtoons(userId);
+		model.addAttribute("favoriteWebtoons", favoriteWebtoons);
+		
 		return "soomtoon_rank";
+	}
+	
+	// 로그인한 유저의 찜한 웹툰 목록
+	@RequestMapping(value = "/soomtoon_zzim")
+	public String soomtoon_zzim(Model model, HttpSession session) {
+		String userId = (String) session.getAttribute("userId");
+		MemberDto userInfo = (MemberDto) session.getAttribute("userInfo");
+		
+		// 로그인한 유저의 찜한 웹툰 목록
+		List<SoomtoonDto> list = ss.getFavoriteWebtoonsList(userId);
+		int zzimCount = ss.zzimCount(userInfo.getUser_idx());
+		
+		model.addAttribute("list",list);
+		model.addAttribute("zzimCount",zzimCount);
+		
+		
+		return "soomtoon_zzim";
 	}
 	
 	// 회원가입
@@ -346,18 +397,17 @@ public class HomeController {
 	@RequestMapping("/insert_member")
 	public String insertMember(Model model, MemberDto dto) {
 		System.out.println("회원가입 정보 들어옴");
-
+		
+		// 암호화 위함
+		dto.setPw(bcryptPasswordEncoder.encode(dto.getPw()));		
+		
+		
+		
 		ms.memberInsert(dto);
 //			MemberDto dto2 = dto;
 //			System.out.println(dto2);
 		return "redirect:/main";
 	}
-	
-	
-	
-	
-	
-	
 	
 	
 	// 로그인 페이지 - 승현
@@ -370,16 +420,38 @@ public class HomeController {
 	@RequestMapping(value="/login", method = RequestMethod.POST)
 	public String login(@RequestParam("id") String id, @RequestParam("pw") String pw,
 						HttpSession session, Model model, MemberDto dto) {
-		boolean loginResult = ms.login(id, pw);
-		if(loginResult) {
-			MemberDto userDto = ms.userInfo(id, pw);
-			session.setAttribute("userId", id);
+		
+		MemberDto userDto = ms.userInfo(id);
+		// id를 이용해 DB에서 암호화된 비밀번호를 포함한 사용자 정보를 가져옴
+		
+		if(userDto != null && bcryptPasswordEncoder.matches(pw,  userDto.getPw())){   // 입력된 비밀번호와 암호화된 비밀번호 비교
+													//입력된 비밀번호, 저장된 암호화된 비밀번호
+			logger.info("@@@@@@로그인 비밀번호 :  " + pw);
+			logger.debug("@@@@@ 로그인한 비밀번호2 : " + pw);
+			logger.warn("@@@@@@ logger.warn@@@@");
+			logger.error("@@@@@@ logger.error@@@@");
+			
+			session.setAttribute("userId",id);
 			session.setAttribute("userInfo", userDto);
 			return "redirect:/main";
 		} else {
 			model.addAttribute("errorMessage", "로그인 실패: 아이디 또는 비밀번호가 잘못되었습니다.");
 			return "login";
 		}
+		
+		
+		
+		
+//		boolean loginResult = ms.login(id);
+//		if(loginResult) {
+//			MemberDto userDto = ms.userInfo(id, pw);
+//			session.setAttribute("userId", id);
+//			session.setAttribute("userInfo", userDto);
+//			return "redirect:/main";
+//		} else {
+//			model.addAttribute("errorMessage", "로그인 실패: 아이디 또는 비밀번호가 잘못되었습니다.");
+//			return "login";
+//		}
 	}
 	
 	// 로그아웃 - 승현

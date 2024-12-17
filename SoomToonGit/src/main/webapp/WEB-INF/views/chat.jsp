@@ -15,10 +15,15 @@
 	let ws;
 	const url = 'ws://localhost:9090/soomtoon/chatserver.do';
 	
-	function connect(name) {
+	function connect(name, toonName) {
 		
 		window.name = name;
 		$('#header small').text(name);
+		
+		window.toonName = toonName;
+// 		alert(toonName);
+		$('#toonName').text(toonName);
+		
 		
 		ws = new WebSocket(url);
 		
@@ -139,7 +144,7 @@ $(document).ready(function(){
 
 <body>
 	<div id="main">
-		<div id="header"><h2>WebSocket <small>닉네임</small></h2></div>
+		<div id="header"><h2>WebSocket <small>닉네임</small> <small id="toonName" style="font-size: 12px; color:rgb(240, 150, 5);">툰네임</small></h2></div>
 		<div id="list">
 			
 		</div>

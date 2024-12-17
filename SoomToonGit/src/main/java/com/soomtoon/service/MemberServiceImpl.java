@@ -43,9 +43,20 @@ public class MemberServiceImpl implements MemberService {
 		boolean login =  dao.login(id, pw);
 		return login;
 	}
+	
+
+//	@Override
+//	public MemberDto userInfo(String id, String pw) {
+//		return dao.userInfo(id, pw);
+//	}
+	
+	@Override	// 로그인 복호화 위함
+	public MemberDto userInfo(String id) {
+		return dao.userInfo(id);
+	}
 
 	@Override
-	public MemberDto userInfo(String id, String pw) {
-		return dao.userInfo(id, pw);
+	public void postDelete(int user_idx) {
+		dao.postDelete(user_idx);
 	}
 }

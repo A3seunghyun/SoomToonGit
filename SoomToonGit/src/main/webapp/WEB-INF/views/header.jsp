@@ -9,7 +9,114 @@
 <title>header -승현</title>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/header.js" defer></script>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+	$(function(){
+		// 계정정보 클릭시
+		$("#user-info").click(function(){
+			
+			let userIdx = "${userInfo.user_idx}";
+			console.log(userIdx);
+			
+			if(userIdx){
+	            location.href = "${pageContext.request.contextPath}/account_infor?user_idx= " + userIdx;
+			} else {
+				alert("로그인 정보가 없습니다.");
+			}
+			
+		});
+		
+		// 보관함 아이콘(웹툰 찜 목록) 클릭시
+		$("#storage-btn").click(function(){
+			
+			let userIdx = "${userInfo.user_idx}";
+			console.log("유저idx : " + userIdx + " 의 보관함 이동");
+			location.href="${pageContext.request.contextPath}/soomtoon_zzim";
+		});
+		
+		
+		// 웹툰 검색 input 창
+		$("#search").on("input", function(){
+			
+			let toonName = $(this).val();
+			let toonResult = $(".list");
+			
+			if(toonName === "") {
+				$(".input-search-box").removeClass("show");
+				return;
+			}
+			
+			$(".input-search-box").addClass("show"); // 검색창 표시
+			
+			$.ajax({
+				type: 'POST',
+				url: '${pageContext.request.contextPath}/ajax/searchToonList',
+				contentType: 'application/json; charset=UTF-8',
+				dataType: "json",
+				data: JSON.stringify({
+					"toonName": toonName
+				}),
+				success: function(res) {
+					let searchResult = "";
+					
+					if(res.length > 0) {
+						console.log("검색결과: ", res);
+						
+						res.forEach(function(res){
+							// JavaScript 템플릿 리터럴 화면단 출력안됨 
+// 							searchResult += `<li class="search-list" data-toonIdx="${res.webToon_idx}">${res.toon_name}</li>`;
+							
+							// JavaScript 문자열 연결(Expression) 방식으로 사용 해야함
+							searchResult += '<li class="search-list" data-toonIdx="' + res.webToon_idx + '">' + res.toon_name + '</li>';
+						});
+						
+						toonResult.html(searchResult);  // jQuery의 html() 메서드로 내용 업데이트
+						
+					} else {
+						toonResult.html("<li class='search-list'>검색 결과가 없습니다.</li>");
+					}
+		        },
+				error: function(error) {
+					console.log("검색실패: ", + error);
+				}
+			});
+		});
+		
+		// 검색결과 '닫기' 클릭시
+		$(".close").click(function(){
+			$("#search").val("");
+			// input태그 텍스트 지움
+			
+			$(".input-search-box").removeClass("show");
+			// 검색결과 창 없앰
+		});
+		
+		
+		// 검색결과 클릭시
+		$(document).on("click", ".search-list", function(){
+		// ajax 동적으로 생성된 .search-list라 document.on 사용
+			let webtoonIdx = $(this).attr("data-toonIdx");
+			location.href="${pageContext.request.contextPath}/webtoonContent?webtoonIdx=" + webtoonIdx;
+		});
+		
+		// 검색결과 Enter키 사용하기 위함
+		$("#search").on("keydown", function(event){
+			
+			if(event.key === "Enter") {
+				event.preventDefault();  // 기본 엔터키 동작 방지 안하면 415 에러뜸
+				
+				let firstResult = $(".search-list").first();
+				//검색결과 중 첫번째 list
+				
+				if(firstResult.length > 0) {
+		 			let webtoonIdx = firstResult.attr("data-toonIdx");
+		 			location.href="${pageContext.request.contextPath}/webtoonContent?webtoonIdx=" + webtoonIdx;
+				}
+			}
+		});
+		
+	}); // $function 마지막 중괄호
+</script>
 </head>
 <body>
 	<div class="header">
@@ -24,14 +131,27 @@
 					<a class="menu" href="${pageContext.request.contextPath}/main"><p>홈으로.</p></a>
 				</div>
 				<div class="search-container">
-					<form>
+					<form action="${pageContext.request.contextPath}/ajax/searchToonList" method="POST">
 						<div class="input-container">
-							<input type="text" name="search" placeholder="제목, 작가를 입력하세요." value="" />
+							<input type="text" name="search" id="search" placeholder="제목, 작가를 입력하세요." value=""   autocomplete='off'/>
 						</div>
 						<a>
 							<img class="search-img" alt="검색" aria-hidden="true" width="24" height="24" decoding="async" data-nimg="1" class="active:opacity-30 cursor-pointer" style="color:transparent" src="data:image/svg+xml,%3csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3e %3cpath fill-rule='evenodd' clip-rule='evenodd' d='M15.1991 6.74703C12.865 4.4131 9.08077 4.4131 6.74668 6.74703C4.41256 9.08098 4.41256 12.8651 6.74668 15.199C8.90131 17.3535 12.2917 17.5192 14.6364 15.696L17.9384 18.9978L18.999 17.9371L15.6969 14.6353C17.5194 12.2908 17.3535 8.90121 15.1991 6.74703ZM7.8073 7.80772C9.55561 6.05953 12.3902 6.05953 14.1385 7.80772C15.8868 9.55588 15.8868 12.3902 14.1385 14.1383C12.3902 15.8865 9.55561 15.8865 7.8073 14.1383C6.05902 12.3902 6.05902 9.55588 7.8073 7.80772Z' fill='%23222222'/%3e %3c/svg%3e">
 						</a>
 					</form>
+					<div class="input-search-box"> <!-- 인풋창 클릭시 나타나는 search-box -->
+						<div class="box-body">
+							<section class="popular-section">
+								<ul id="list" class="list">
+								
+								</ul>
+							</section>
+						</div>
+						<div class="search-box-footer">
+							<div></div>
+							<div class="close" style="cursor:pointer;">닫기</div>
+						</div>
+					</div>
 				</div>
 				<div class="user-menu-container">
 					<a id="stage-btn" class="menu-box" style="cursor: pointer; margin: 0px 0px;">

@@ -16,4 +16,11 @@ public class ChatController {
 	public String chat(Model model) {
 		return "chat";
 	}
+	
+	@GetMapping(value = "/chat.list")
+	public String chatList(String alias, Model model) {
+		
+		model.addAttribute("alias",alias);
+		return "chat_list";
+	}
 }

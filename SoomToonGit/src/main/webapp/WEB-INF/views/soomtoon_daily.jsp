@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
     
 <!DOCTYPE html>
 <html>
@@ -11,43 +12,73 @@
 </head>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-$(function(){
-	$(".daily-text").click(function(){
-		let dayWeek = $(this).data('day'); 
-		// 클릭한 요일의 day 값을 뽑음
-		
-		$(".daily-text").show();
-		$(".daily-subtab-check").hide();
-		
-		$(this).hide();
-		$(".daily-subtab-check[data-day='" + dayWeek + "']").show();
-		
-		location.href="${pageContext.request.contextPath}/main?day_week=" + dayWeek;
-		
-	});	
-	
-	$(".content-img").click(function(){
-		let idx = $(this).attr("data-toonIdx");
-		location.href = "${pageContext.request.contextPath}/webtoonContent?webtoonIdx=" + idx;
-	});
-		
-	$("#rank").click(function(){
-		location.href="${pageContext.request.contextPath}/soomtoon_rank";
-	
-	});
-}); /* $(function) 마지막 중괄호 */
+$(function() {
+    // 요일 클릭 이벤트
+    $(".daily-text").click(function() {
+        let dayWeek = $(this).data('day');
+        
+        $(".daily-text").show();
+        $(".daily-subtab-check").hide();
+        
+        $(this).hide();
+        $(".daily-subtab-check[data-day='" + dayWeek + "']").show();
+        
+        location.href = "${pageContext.request.contextPath}/main?day_week=" + dayWeek;
+    });
 
+    // 웹툰 이미지 및 제목 클릭 이벤트
+    $(".content-img, .content-title").click(function() {
+    	// 조상요소 content 갔다가 content-img에 data-toonIdx 속성을 찾음
+        let idx = $(this).closest(".content").find(".content-img").attr("data-toonIdx");
+        
+        location.href = "${pageContext.request.contextPath}/webtoonContent?webtoonIdx=" + idx;
+    });
 
+    // 랭킹 클릭 이벤트
+    $("#rank").click(function() {
+        location.href = "${pageContext.request.contextPath}/soomtoon_rank";
+    });
 
-$(document).ready(function() {
-    // selectedDay 값에 따라 해당 요일을 표시
+    // 찜 기능 클릭 이벤트 (추후 AJAX 구현 가능)
+    $(".heart-icon").click(function() {
+    	let favoriteIcon = $(this).closest(".favorite-icon");
+    	let toonIdx = $(this).closest(".content").find(".content-img").attr("data-toonIdx");
+    	let userIdx = "${userInfo.user_idx}";
+    	let isFavorite = favoriteIcon.attr("data-favorite") === "true";
+    	// 현재 찜 상태를 가져옴
+    	
+    	alert("찜!");
+    	
+    	$.ajax({
+    		type : "POST",
+    		url : "${pageContext.request.contextPath}/ajax/soomtoonZzim",
+    		contentType: "application/json",
+    		data : JSON.stringify({toonIdx: toonIdx, userIdx: userIdx, isFavorite: isFavorite}),
+    		success : function(res) {
+    			if(res.status === "success") {
+    				
+    				// 서버에서 찜 상태 업데이트 성공 시, data-favorite 속성 토글
+    				favoriteIcon.attr("data-favorite", !isFavorite ? "true" : "false");
+    				alert(isFavorite ? "찜 해제되었습니다." : "찜 성공!");
+    				
+					favoriteIcon.find(".heart-icon").text(!isFavorite ? '♥' : '♡');
+    			} else {
+    				alert("찜 상태 변경 실패")
+    			}
+    		},
+    		error : function() {
+    			alert("찜하기 요청 중 오류 !");
+    		}
+    	});
+    });
+
+    // 선택된 요일 표시
     let selectedDay = "${day_week}";
-
-    // 선택된 요일에 해당하는 .daily-subtab-check를 표시하고, .daily-text는 숨김
     $(".daily-text[data-day='" + selectedDay + "']").hide();
     $(".daily-subtab-check[data-day='" + selectedDay + "']").show();
 });
 </script>
+
 <body>
 <jsp:include page="header.jsp"></jsp:include>
 <div class="full-box">
@@ -102,6 +133,12 @@ $(document).ready(function() {
 					<c:forEach var="dto" items="${list}">
 						<div class="content">
 							<img class="content-img" data-toonIdx="${dto.webToon_idx }" src="${dto.toon_img }"/>
+							<!-- 찜 버튼 추가 -->
+							<div class="favorite-icon" data-toonIdx="${dto.webToon_idx}" 
+								data-favorite = "${favoriteWebtoons[dto.webToon_idx] ? 'true' : 'false'}">
+								<span class="heart-icon"> ${favoriteWebtoons[dto.webToon_idx] ? '♥' : '♡'} </span> 
+								<div class="content-title">${dto.toon_name }</div>
+							</div>
 						</div>
 					</c:forEach>
 				</c:if>

@@ -43,7 +43,8 @@ public class MemberDaoImpl implements MemberDao{
 	// 계정 삭제
 	@Override
 	public void acoountDelete(int user_idx) {
-		session.update("Member.deleteUser", user_idx);
+		session.update("Member.deleteUser", user_idx);		// 계정의 상태변경(회원탈퇴)
+		session.delete("Member.zzimDelete", user_idx);		// 계정의 찜 목록 삭제
 	}
  
 
@@ -60,11 +61,24 @@ public class MemberDaoImpl implements MemberDao{
 	}
 	
 	// 유저 정보 - 승현
+//	@Override
+//	public MemberDto userInfo(String id, String pw) {
+//		HashMap<String, String> hmap = new HashMap<String, String>();
+//		hmap.put("id", id);
+//		hmap.put("pw", pw);
+//		
+//		List<MemberDto> list = session.selectList("Member.userInfo", hmap);
+//		
+//		MemberDto dto = new MemberDto();
+//		dto= list.get(0);
+//		
+//		return dto;
+//	}
+	
 	@Override
-	public MemberDto userInfo(String id, String pw) {
+	public MemberDto userInfo(String id) {
 		HashMap<String, String> hmap = new HashMap<String, String>();
 		hmap.put("id", id);
-		hmap.put("pw", pw);
 		
 		List<MemberDto> list = session.selectList("Member.userInfo", hmap);
 		
@@ -73,4 +87,12 @@ public class MemberDaoImpl implements MemberDao{
 		
 		return dto;
 	}
+	
+
+	// 계정삭제시 작성된 포스트,댓글 삭제 (댓글은 오라클 종속삭제)
+	@Override
+	public void postDelete(int user_idx) {
+		session.delete("Member.postDelete", user_idx);
+	}
+
 }

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,10 +16,46 @@ $(function(){
 		location.href="${pageContext.request.contextPath}/main?day_week=" + 1;
 	});
 	
-	$(".content-img").click(function(){
-		let idx = $(this).attr("data-toonIdx");
-		location.href = "${pageContext.request.contextPath}/webtoonContent?webtoonIdx=" + idx;
-	});
+    // 웹툰 이미지 및 제목 클릭 이벤트
+    $(".content-img, .content-title").click(function() {
+    	// 조상요소 content 갔다가 content-img에 data-toonIdx 속성을 찾음
+        let idx = $(this).closest(".content").find(".content-img").attr("data-toonIdx");
+        
+        location.href = "${pageContext.request.contextPath}/webtoonContent?webtoonIdx=" + idx;
+    });
+	
+    // 찜 기능 클릭 이벤트 (추후 AJAX 구현 가능)
+    $(".heart-icon").click(function() {
+    	let favoriteIcon = $(this).closest(".favorite-icon");
+    	let toonIdx = $(this).closest(".content").find(".content-img").attr("data-toonIdx");
+    	let userIdx = "${userInfo.user_idx}";
+    	let isFavorite = favoriteIcon.attr("data-favorite") === "true";
+    	// 현재 찜 상태를 가져옴
+    	
+    	alert("찜!");
+    	
+    	$.ajax({
+    		type : "POST",
+    		url : "${pageContext.request.contextPath}/ajax/soomtoonZzim",
+    		contentType: "application/json",
+    		data : JSON.stringify({toonIdx: toonIdx, userIdx: userIdx, isFavorite: isFavorite}),
+    		success : function(res) {
+    			if(res.status === "success") {
+    				
+    				// 서버에서 찜 상태 업데이트 성공 시, data-favorite 속성 토글
+    				favoriteIcon.attr("data-favorite", !isFavorite ? "true" : "false");
+    				alert(isFavorite ? "찜 해제되었습니다." : "찜 성공!");
+    				
+					favoriteIcon.find(".heart-icon").text(!isFavorite ? '♥' : '♡');
+    			} else {
+    				alert("찜 상태 변경 실패")
+    			}
+    		},
+    		error : function() {
+    			alert("찜하기 요청 중 오류 !");
+    		}
+    	});
+    });
 });
 
 </script>
@@ -54,16 +91,20 @@ $(function(){
 		<div class="content-layout">
 			<div class="content-layout-inner">
 				<c:forEach var="dto" items="${list}">
-				<div class="content">
-					<img class="content-img" data-toonIdx="${dto.webToon_idx }" src="${dto.toon_img }"/>
-				</div>
+					<div class="content">
+						<img class="content-img" data-toonIdx="${dto.webToon_idx }" src="${dto.toon_img }"/>
+						<!-- 찜 버튼 추가 -->
+						<div class="favorite-icon" data-toonIdx="${dto.webToon_idx}" 
+							data-favorite = "${favoriteWebtoons[dto.webToon_idx] ? 'true' : 'false'}">
+							<span class="heart-icon"> ${favoriteWebtoons[dto.webToon_idx] ? '♥' : '♡'} </span> 
+							<div class="content-title">${dto.toon_name }</div>
+						</div>
+					</div>
 				</c:forEach>
 			</div>
 		</div>
 	</div>
 </div>
-
-<!-- 챗봇 아이콘 -->
 <jsp:include page="chat_bot.jsp"></jsp:include>
 <jsp:include page="footer.jsp"></jsp:include>
 <script type="text/javascript" src="resources/js/soomtoon_rank.js"></script>

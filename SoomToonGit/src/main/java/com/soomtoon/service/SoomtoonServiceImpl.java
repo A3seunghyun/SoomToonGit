@@ -1,6 +1,9 @@
 package com.soomtoon.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +38,50 @@ public class SoomtoonServiceImpl implements SoomtoonService {
 	@Override
 	public ArrayList<SoomtoonDto> getSoomtoonListAll() {
 		return dao.getSoomtoonListAll();
+	}
+	
+	// 웹툰 검색
+	@Override
+	public ArrayList<SoomtoonDto> searchToonList(String toonName) {
+		return dao.searchToonList(toonName);
+	}
+
+	
+	// 웹툰 찜 insert
+	@Override
+	public boolean toonZzim(int webtoon_idx, int user_idx) {
+		return dao.toonZzim(webtoon_idx, user_idx);
+	}
+	
+	// 로그인한 유저의 찜 여부 확인
+	@Override
+	public Map<Integer, Boolean> getFavoriteWebtoons(String userId) {
+		List<SoomtoonDto> favoriteList = dao.getFavoriteWebtoons(userId);
+		Map<Integer, Boolean> favoriteMap = new HashMap<>();
+		
+		for(SoomtoonDto dto : favoriteList) {
+			favoriteMap.put(dto.getWebToon_idx(), true);
+		}
+		return favoriteMap;
+	}
+	
+	// 유저의 웹툰 찜 목록 확인
+	@Override
+	public List<SoomtoonDto> getFavoriteWebtoonsList(String userId) {
+		List<SoomtoonDto> favoriteList = dao.getFavoriteWebtoons(userId);
+		return favoriteList;
+	}
+	
+	// 찜 삭제
+	@Override
+	public boolean deleteZzim(int webtoon_idx, int user_idx) {
+		return dao.deleteZzim(webtoon_idx, user_idx);
+	}
+
+	// 유저의 찜 count
+	@Override
+	public int zzimCount(int user_idx) {
+		return dao.zzimCount(user_idx);
 	}
 
 }
