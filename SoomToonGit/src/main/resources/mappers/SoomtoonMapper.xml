@@ -4,29 +4,83 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="SoomtoonMapper">
-
+	
+	<!-- 요일 별 웹툰 리스트 -->
 	<select id="toonList" resultType="com.soomtoon.dto.SoomtoonDto">
 		SELECT *
 		FROM webtoon
 		WHERE day_week = #{day_week}
 	</select>
 	
+	<!-- 요일별 웹툰 수 count -->
 	<select id="countToon" resultType="int">
 		SELECT COUNT(*)
 		FROM webtoon
 		WHERE day_week = #{day_week}
 	</select>
 	
+	<!-- 웹툰의 총 count -->
 	<select id="countToonAll" resultType="int">
 		SELECT COUNT(*)
 		FROM webtoon
 	</select>
 	
+	<!-- 실시간 랭킹 웹툰 리스트 -->
 	<select id="toonListAll" resultType="com.soomtoon.dto.SoomtoonDto">
 		SELECT *
 		FROM webtoon
 		ORDER BY toon_view DESC
 	</select>
+	
+	<!-- 웹툰 검색 -->
+	<select id="searchToonList" resultType="com.soomtoon.dto.SoomtoonDto">
+		<![CDATA[
+		    SELECT *
+		    FROM webtoon
+		    WHERE toon_name LIKE '%' || #{toonName} || '%'
+		    ORDER BY webtoon_idx ASC
+	    ]]>
+	</select>
+	
+	<!-- 웹툰 찜 insert -->
+	<insert id="toonZzim">
+		INSERT INTO WEBTOON_ZZIM
+		VALUES(#{webtoon_idx}, #{user_idx})
+	</insert>
+	
+	<!-- 찜 delete -->
+	<delete id="deleteZzim">
+		DELETE 
+		FROM webtoon_zzim
+		WHERE webtoon_idx = #{webtoon_idx}
+		AND user_idx = #{user_idx} 
+	</delete>
+	
+	<!-- 찜 상태인지 확인 -->
+	<select id="checkZzim" resultType="java.lang.Integer">
+		SELECT 1
+		FROM WEBTOON_ZZIM 
+		WHERE WEBTOON_IDX = #{webtoon_idx} 
+		AND USER_IDX = #{user_idx}
+	</select>
+	
+	<!-- 로그인한 유저 찜 목록 -->
+	<select id="getFavoriteWebtoons" resultType="com.soomtoon.dto.SoomtoonDto">
+		SELECT wz.webtoon_idx, wt.toon_name, wt.toon_img
+		FROM webtoon_zzim wz
+		JOIN users u ON u.user_idx = wz.user_idx
+		JOIN webtoon wt ON wz.webtoon_idx = wt.webtoon_idx
+		WHERE u.id = #{userId, jdbcType=VARCHAR}
+		ORDER BY wz.webtoon_idx ASC
+	</select>
+
+	<!-- 로그인한 유저의 찜한 웹툰의 수 카운트 -->
+	<select id="zzimCount" resultType= "Integer">
+		SELECT count(*)
+		FROM webtoon_zzim
+		WHERE user_idx = #{uesr_idx}
+	</select>
+	
 	
 	
 	<!-- 승현 웹툰 검색 리스트 -->
